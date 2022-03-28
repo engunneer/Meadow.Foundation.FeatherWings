@@ -17,6 +17,6 @@
   </PropertyGroup>
   <ItemGroup>
 	<None Include="..\..\icon.png" Pack="true" PackagePath="" />  
-    <ProjectReference Include="..\..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Pca9685\Driver\ICs.IOExpanders.Pca9685.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Pca9685\Driver\ICs.IOExpanders.Pca9685.csproj" />
   </ItemGroup>
 </Project>
