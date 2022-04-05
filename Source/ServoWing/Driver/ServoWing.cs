@@ -11,11 +11,22 @@ namespace Meadow.Foundation.FeatherWing
     /// <remarks>All PWM channels run at the same Frequency</remarks>
     public class ServoWing 
     {
+        Pca9685 pca9685;
+
         readonly short portCount;
 
-        protected Pca9685 pca9685;
-
-        public ServoWing(II2cBus i2cBus, byte address = (byte)Pca9685.Addresses.Default, int frequency = 50, short portCount = 8)
+        /// <summary>
+        /// Creates a ServoWing driver
+        /// </summary>
+        /// <param name="i2cBus"></param>
+        /// <param name="address"></param>
+        /// <param name="frequency"></param>
+        /// <param name="portCount"></param>
+        public ServoWing(
+            II2cBus i2cBus, 
+            byte address = (byte)Pca9685.Addresses.Default, 
+            int frequency = 50, 
+            short portCount = 8)
         {
             if (portCount != 8 && portCount != 16)
             {
@@ -24,13 +35,16 @@ namespace Meadow.Foundation.FeatherWing
 
             this.portCount = portCount;
             pca9685 = new Pca9685(i2cBus, address, frequency);
-        }
-
-        public void Initialize()
-        {
             pca9685.Initialize();
         }
 
+        /// <summary>
+        /// Returns the specified servo
+        /// </summary>
+        /// <param name="portIndex"></param>
+        /// <param name="servoConfig"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public Servo GetServo(byte portIndex, ServoConfig servoConfig)
         {
             if ((portIndex < 0) || (portIndex > portCount))
@@ -44,6 +58,13 @@ namespace Meadow.Foundation.FeatherWing
             return servo;
         }
 
+        /// <summary>
+        /// Returns the specified continues rotation servo
+        /// </summary>
+        /// <param name="portIndex"></param>
+        /// <param name="servoConfig"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public IContinuousRotationServo GetContinuousRotatioServo(byte portIndex, ServoConfig servoConfig)
         {
             if ((portIndex < 0) || (portIndex > portCount))
