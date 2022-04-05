@@ -10,7 +10,7 @@ using AU = Meadow.Units.Angle.UnitType;
 
 namespace FeatherWings.ServoWing_Sample
 {
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
         //<!—SNIP—>
 
@@ -22,8 +22,6 @@ namespace FeatherWings.ServoWing_Sample
 
             var i2CBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
             servoWing = new ServoWing(i2CBus);
-
-            servoWing.Initialize();
 
             var servo = servoWing.GetServo(0, NamedServoConfigs.SG90);
 
