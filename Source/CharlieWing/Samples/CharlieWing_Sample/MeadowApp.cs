@@ -7,7 +7,7 @@ using Meadow.Foundation.Graphics;
 
 namespace FeatherWings.CharlieWing_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
         //<!—SNIP—>
 
