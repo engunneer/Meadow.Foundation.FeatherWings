@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Meadow.Foundation.FeatherWing
+﻿namespace Meadow.Foundation.FeatherWing
 {
     public enum ButtonType : byte
     {

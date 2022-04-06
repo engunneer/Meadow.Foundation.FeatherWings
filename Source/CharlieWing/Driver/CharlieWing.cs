@@ -11,6 +11,8 @@ namespace Meadow.Foundation.FeatherWing
     /// </summary>
     public class CharlieWing : IGraphicsDisplay
     {
+        protected readonly Is31fl3731 iS31FL3731;
+
         /// <summary>
         /// Color mode of display
         /// </summary>
@@ -27,11 +29,17 @@ namespace Meadow.Foundation.FeatherWing
         public int Height => 7;
 
         public byte Frame { get; set; }
-        
+
+        /// <summary>
+        /// Gets/Sets property to ignore boundaries when drawing outside of the LED matrix
+        /// </summary>
         public bool IgnoreOutOfBoundsPixels { get; set; }
 
-        protected readonly Is31fl3731 iS31FL3731;
-
+        /// <summary>
+        /// Creates a CharlieWing driver
+        /// </summary>
+        /// <param name="i2cBus"></param>
+        /// <param name="address"></param>
         public CharlieWing(II2cBus i2cBus, byte address = (byte)Is31fl3731.Addresses.Default)
         {
             iS31FL3731 = new Is31fl3731(i2cBus, address);
@@ -44,17 +52,44 @@ namespace Meadow.Foundation.FeatherWing
             }
         }
 
+        /// <summary>
+        /// Clear display
+        /// </summary>
+        /// <param name="updateDisplay"></param>
         public void Clear(bool updateDisplay = false)
         {
             iS31FL3731.Clear(Frame);
         }
 
+        /// <summary>
+        /// Turn on an RGB LED with the specified color on (x,y) coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="color"></param>
         public void DrawPixel(int x, int y, Color color)
         {
             DrawPixel(x, y, color.Color8bppGray);
         }
 
-        public virtual void DrawPixel(int x, int y, byte brightness)
+        /// <summary>
+        /// Turn on a LED on (x,y) coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="colored"></param>
+        public void DrawPixel(int x, int y, bool colored)
+        {
+            DrawPixel(x, y, colored ? Color.White : Color.Black);
+        }
+
+        /// <summary>
+        /// Turn on LED with the specified brightness on (x,y) coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="brightness"></param>
+        public void DrawPixel(int x, int y, byte brightness)
         {
             if (IgnoreOutOfBoundsPixels)
             {
@@ -80,44 +115,81 @@ namespace Meadow.Foundation.FeatherWing
             iS31FL3731.SetLedPwm(Frame, (byte)(x + y * 16), brightness);
         }
 
-        public void DrawPixel(int x, int y, bool colored)
-        {
-            DrawPixel(x, y, colored?Color.White:Color.Black);
-        }
-
+        /// <summary>
+        /// Invert the color of the pixel at the given location
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void InvertPixel(int x, int y)
         {
             throw new NotImplementedException();
         }
 
-        public void Show()
+        /// <summary>
+        /// Draw a buffer to the display
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="displayBuffer"></param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
         {
-            iS31FL3731.DisplayFrame(Frame);
+            throw new NotImplementedException();
         }
 
-        public void Show(int left, int top, int right, int bottom)
-        {
-            Show();
-        }
-
-        public virtual void Show(byte frame)
-        {   //ToDo
-            iS31FL3731.DisplayFrame(Frame);
-        }
-
+        /// <summary>
+        /// Clear the display.
+        /// </summary>
+        /// <param name="clearColor"></param>
+        /// <param name="updateDisplay"></param>
+        /// <exception cref="NotImplementedException"></exception>
         public void Fill(Color clearColor, bool updateDisplay = false)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Clear the display.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="fillColor"></param>
+        /// <exception cref="NotImplementedException"></exception>
         public void Fill(int x, int y, int width, int height, Color fillColor)
         {
             throw new NotImplementedException();
         }
 
-        public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
+        /// <summary>
+        /// Show changes on the display
+        /// </summary>
+        public void Show()
         {
-            throw new NotImplementedException();
+            iS31FL3731.DisplayFrame(Frame);
+        }
+
+        /// <summary>
+        /// Show changes on the display
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <param name="right"></param>
+        /// <param name="bottom"></param>
+        public void Show(int left, int top, int right, int bottom)
+        {
+            Show();
+        }
+
+        /// <summary>
+        /// Show changes on the display
+        /// </summary>
+        /// <param name="frame"></param>
+        public void Show(byte frame)
+        {   
+            // TODO
+            iS31FL3731.DisplayFrame(Frame);
         }
     }
 }

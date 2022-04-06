@@ -12,7 +12,7 @@ namespace Meadow.Foundation.FeatherWing
         Pca9685 pca9685;
 
         /// <summary>
-        /// 
+        /// Creates a MotorWing driver
         /// </summary>
         /// <param name="i2cBus">i2c bus</param>
         /// <param name="address">The address of the i2c Peripheral</param>

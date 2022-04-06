@@ -4,19 +4,31 @@ using System;
 
 namespace Meadow.Foundation.FeatherWing
 {
+    /// <summary>
+    /// Motor commands
+    /// </summary>
     public enum Commmand
-    {
+    {     
         FORWARD,
         BACKWARD,
         RELEASE
     }
 
+    /// <summary>
+    /// Represents a DC Motor
+    /// </summary>
     public class DCMotor : Motor
     {
         readonly byte _pwmPin;
         readonly byte _in1;
         readonly byte _in2;
 
+        /// <summary>
+        /// Creates a DCMotor driver
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="pca9685"></param>
+        /// <exception cref="ArgumentException"></exception>
         public DCMotor(short num, Pca9685 pca9685) : base(pca9685)
         {
 
@@ -113,6 +125,9 @@ namespace Meadow.Foundation.FeatherWing
             _pca9685.SetPwm(_pwmPin, 0, speed);
         }
 
+        /// <summary>
+        /// Stops the motor
+        /// </summary>
         public void Stop()
         {
             Run(Commmand.RELEASE);

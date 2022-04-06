@@ -4,6 +4,9 @@ using System.Threading;
 
 namespace Meadow.Foundation.FeatherWing
 {
+    /// <summary>
+    /// Motor style
+    /// </summary>
     public enum Style
     {
         SINGLE = 1,
@@ -12,12 +15,18 @@ namespace Meadow.Foundation.FeatherWing
         MICROSTEP = 4
     }
 
+    /// <summary>
+    /// Motor direction
+    /// </summary>
     public enum Direction
     {
         FORWARD,
         BACKWARD
     }
 
+    /// <summary>
+    /// Represents a Stepper Motor
+    /// </summary>
     public class StepperMotor : Motor
     {
         int _currentstep;

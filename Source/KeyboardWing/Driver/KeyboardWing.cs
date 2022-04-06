@@ -3,24 +3,44 @@ using Meadow.Foundation.Displays.TftSpi;
 using Meadow.Foundation.Sensors.Hid;
 using Meadow.Foundation.Sensors.Light;
 using Meadow.Hardware;
-using Meadow.Peripherals.Sensors.Light;
 
 namespace Meadow.Foundation.FeatherWing
 {
-
     /// <summary>
     /// Represents Adafruits OLED Feather Wing
     /// </summary>
     public class KeyboardWing
     {
+        /// <summary>
+        /// Returns the Ili9341 driver
+        /// </summary>
         public Ili9341 Display { get; protected set; }
 
+        /// <summary>
+        /// Returns the Tsc2004 driver
+        /// </summary>
         public Tsc2004 TouchScreen { get; protected set; }
 
+        /// <summary>
+        /// Returns the BBQ10Keyboard driver
+        /// </summary>
         public BBQ10Keyboard Keyboard { get; protected set; }
 
+        /// <summary>
+        /// Returns the LightSensor driver
+        /// </summary>
         public AnalogLightSensor LightSensor { get; protected set; }
 
+        /// <summary>
+        /// Creates a KeyboardWing driver
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="spiBus"></param>
+        /// <param name="i2cBus"></param>
+        /// <param name="keyboardPin"></param>
+        /// <param name="displayChipSelectPin"></param>
+        /// <param name="displayDcPin"></param>
+        /// <param name="lightSensorPin"></param>
         public KeyboardWing(IMeadowDevice device, 
             ISpiBus spiBus, 
             II2cBus i2cBus, 
@@ -52,9 +72,6 @@ namespace Meadow.Foundation.FeatherWing
             );
 
             LightSensor = new AnalogLightSensor(device, lightSensorPin);
-            
-            
         }
     }
 }
-

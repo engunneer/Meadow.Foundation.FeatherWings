@@ -23,8 +23,6 @@ namespace FeatherWings.ServoWing_Sample
             var i2CBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
             servoWing = new ServoWing(i2CBus);
 
-            servoWing.Initialize();
-
             var servo = servoWing.GetServo(0, NamedServoConfigs.SG90);
 
             while (true)
