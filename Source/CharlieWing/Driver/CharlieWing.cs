@@ -4,7 +4,7 @@ using Meadow.Foundation.Graphics.Buffers;
 using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Hardware;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents an Adafruit CharliePlex 15x7 feather wing

@@ -4,7 +4,7 @@ using Meadow.Foundation.Sensors.Hid;
 using Meadow.Foundation.Sensors.Light;
 using Meadow.Hardware;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruits OLED Feather Wing

@@ -4,7 +4,7 @@ using System.Threading;
 using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
-using Meadow.Foundation.FeatherWing;
+using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Leds;
 using Meadow.Hardware;
 

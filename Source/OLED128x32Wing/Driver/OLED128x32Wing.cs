@@ -2,7 +2,7 @@
 using Meadow.Foundation.Sensors.Buttons;
 using Meadow.Hardware;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruits OLED Feather Wing

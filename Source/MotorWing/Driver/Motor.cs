@@ -1,6 +1,6 @@
 ﻿using Meadow.Foundation.ICs.IOExpanders;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents a generic motor

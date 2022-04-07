@@ -1,7 +1,7 @@
 ﻿using Meadow.Foundation.Sensors.Gnss;
 using Meadow.Hardware;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents a featherwing GPSWing
