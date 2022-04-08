@@ -2,7 +2,7 @@
 using System.Threading;
 using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation.FeatherWing;
+using Meadow.Foundation.FeatherWings;
 using Meadow.Hardware;
 using Meadow.Foundation.Servos;
 using Meadow.Units;

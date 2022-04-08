@@ -3,7 +3,7 @@ using Meadow.Foundation.Servos;
 using Meadow.Hardware;
 using System;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruit's Feather Servo Wing and 16-Channel 12-bit PWM/Servo Shield

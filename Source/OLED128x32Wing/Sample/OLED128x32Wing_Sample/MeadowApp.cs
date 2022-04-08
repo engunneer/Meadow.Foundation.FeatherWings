@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation.FeatherWing;
+using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
 

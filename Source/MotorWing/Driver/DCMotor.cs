@@ -2,7 +2,7 @@
 using Meadow.Foundation.ICs.IOExpanders;
 using System;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Motor commands

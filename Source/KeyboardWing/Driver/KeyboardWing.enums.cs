@@ -1,4 +1,4 @@
-﻿namespace Meadow.Foundation.FeatherWing
+﻿namespace Meadow.Foundation.FeatherWings
 {
     public enum ButtonType : byte
     {

@@ -4,7 +4,7 @@ using Meadow.Foundation.Leds;
 using Meadow.Hardware;
 using static Meadow.Foundation.Leds.Apa102;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruit's Dotstar feather wing 12x6

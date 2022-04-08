@@ -2,7 +2,7 @@
 using System.Threading;
 using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation.FeatherWing;
+using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
 
 namespace FeatherWings.LedMatrix8x16_Sample

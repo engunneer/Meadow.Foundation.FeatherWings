@@ -2,7 +2,7 @@
 using Meadow.Hardware;
 using System;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruit's Feather DC & Stepper Motor Wing

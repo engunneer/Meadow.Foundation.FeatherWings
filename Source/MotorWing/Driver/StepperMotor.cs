@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 
-namespace Meadow.Foundation.FeatherWing
+namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Motor style
