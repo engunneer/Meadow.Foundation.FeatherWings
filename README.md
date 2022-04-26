@@ -1,3 +1,5 @@
+<img src="Design/banner.jpg" alt="Meadow.Foundation.FeatherWings" style="margin-bottom:10px" />
+
 # Meadow.Foundation.FeatherWings
 
 The Meadow.Foundation.FeatherWings peripherals library is an open source repository of Meadow compatible drivers for hardware that conforms to the [Adafruit Featherwing](https://learn.adafruit.com/adafruit-feather/) form factor. Meadow.Foundation.Featherwings is part of the open source driver and peripheral library [Meadow.Foundation](http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/Peripherals/).
