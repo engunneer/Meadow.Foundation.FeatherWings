@@ -12,7 +12,7 @@ namespace FeatherWings.ServoWing_Sample
 {
     public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         ServoWing servoWing;
 
@@ -45,6 +45,6 @@ namespace FeatherWings.ServoWing_Sample
             }
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
     }
 }

@@ -15,7 +15,7 @@ namespace FeatherWings.DotstarWing_Sample
     /// </remarks>
     public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         DotstarWing dotStarWing;
         MicroGraphics graphics;
@@ -38,7 +38,7 @@ namespace FeatherWings.DotstarWing_Sample
             graphics.Show();
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
 
         void DrawPixels()
         {

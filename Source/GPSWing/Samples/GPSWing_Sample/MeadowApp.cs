@@ -10,7 +10,7 @@ namespace MeadowApp
 {
     public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         GPSWing gps;
 
@@ -76,6 +76,6 @@ namespace MeadowApp
             };
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
     }
 }

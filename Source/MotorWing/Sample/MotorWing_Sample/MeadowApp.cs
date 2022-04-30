@@ -12,7 +12,7 @@ namespace FeatherWings.MotorWing_Sample
 {
     public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         MotorWing motorWing;
 
@@ -68,6 +68,6 @@ namespace FeatherWings.MotorWing_Sample
             }
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
     }
 }

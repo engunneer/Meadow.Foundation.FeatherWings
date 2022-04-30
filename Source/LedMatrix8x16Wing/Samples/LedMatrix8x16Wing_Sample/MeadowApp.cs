@@ -9,7 +9,7 @@ namespace FeatherWings.LedMatrix8x16_Sample
 {
     public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         LedMatrix8x16Wing ledMatrixWing;
         MicroGraphics graphics;
@@ -30,7 +30,7 @@ namespace FeatherWings.LedMatrix8x16_Sample
             graphics.Show();
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
 
         void PixelWalk()
         {
