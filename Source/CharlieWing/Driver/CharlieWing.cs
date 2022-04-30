@@ -11,6 +11,9 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public class CharlieWing : IGraphicsDisplay
     {
+        /// <summary>
+        /// Is31fl3731 object to manage the leds
+        /// </summary>
         protected readonly Is31fl3731 iS31FL3731;
 
         /// <summary>
@@ -28,6 +31,9 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public int Height => 7;
 
+        /// <summary>
+        /// The Is31fl3731 active frame 
+        /// </summary>
         public byte Frame { get; set; }
 
         /// <summary>
@@ -131,10 +137,16 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="displayBuffer"></param>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
         public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < displayBuffer.Width; i++)
+            {
+                for (int j = 0; j < displayBuffer.Height; j++)
+                {
+                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i, j));
+                }
+            }
         }
 
         /// <summary>
@@ -145,7 +157,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <exception cref="NotImplementedException"></exception>
         public void Fill(Color clearColor, bool updateDisplay = false)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < this.Width; i++)
+            {
+                for (int j = 0;j < this.Height; j++)
+                {
+                    DrawPixel(i, j, clearColor);
+                }
+            }
         }
 
         /// <summary>
@@ -159,7 +177,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <exception cref="NotImplementedException"></exception>
         public void Fill(int x, int y, int width, int height, Color fillColor)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    DrawPixel(x + i, y + j, fillColor);
+                }
+            }
         }
 
         /// <summary>
@@ -188,8 +212,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="frame"></param>
         public void Show(byte frame)
         {   
-            // TODO
-            iS31FL3731.DisplayFrame(Frame);
+            iS31FL3731.DisplayFrame(frame);
         }
     }
 }
