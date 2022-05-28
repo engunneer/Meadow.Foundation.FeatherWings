@@ -1,4 +1,4 @@
-﻿<Project Sdk="Meadow.Sdk/1.1.0">
+<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>icon.png</PackageIcon>
@@ -17,10 +17,10 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\icon.png" Pack="true" PackagePath="" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Graphics.MicroGraphics\Driver\Graphics.MicroGraphics.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Displays.Ssd130x\Driver\Displays.Ssd130x.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Displays.TftSpi\Driver\Displays.TftSpi.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Hid.BBQ10Keyboard\Driver\Sensors.Hid.Bbq10Keyboard.csproj" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Hid.Tsc2004\Driver\Sensors.Hid.Tsc2004.csproj" />
+    <PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Displays.Ssd130x" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Hid.Bbq10Keyboard" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Sensors.Hid.Tsc2004" Version="0.*" />
   </ItemGroup>
 </Project>
