@@ -1,4 +1,4 @@
-﻿<Project Sdk="Meadow.Sdk/1.1.0">
+<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>icon.png</PackageIcon>
@@ -9,14 +9,14 @@
     <Company>Wilderness Labs, Inc</Company>
     <PackageProjectUrl>http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/</PackageProjectUrl>
     <PackageId>Meadow.Foundation.FeatherWings.LedMatrix8x16Wing</PackageId>
-    <RepositoryUrl>https://github.com/WildernessLabs/Meadow.Foundation</RepositoryUrl>
+    <RepositoryUrl>https://github.com/WildernessLabs/Meadow.Foundation.FeatherWings</RepositoryUrl>
     <PackageTags>Meadow.Foundation, FeatherWing, Led, matrix, HT16K33</PackageTags>
     <Version>0.1.39</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>AdaFruit HT16K33 8x16 Matrix LED FeatherWing</Description>
   </PropertyGroup>
   <ItemGroup>
-	<None Include="..\..\icon.png" Pack="true" PackagePath="" />
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Ht16k33\Driver\ICs.IOExpanders.Ht16k33.csproj" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" />
+    <PackageReference Include="Meadow.Foundation.ICs.IOExpanders.Ht16k33" Version="0.*" />
   </ItemGroup>
 </Project>

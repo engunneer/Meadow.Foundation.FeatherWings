@@ -8,9 +8,9 @@ using Meadow.Peripherals.Sensors.Location.Gnss;
 
 namespace MeadowApp
 {
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         GPSWing gps;
 
@@ -76,6 +76,6 @@ namespace MeadowApp
             };
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
     }
 }

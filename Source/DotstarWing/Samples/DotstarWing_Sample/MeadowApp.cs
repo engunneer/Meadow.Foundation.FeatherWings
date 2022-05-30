@@ -13,9 +13,9 @@ namespace FeatherWings.DotstarWing_Sample
     /// <remarks>NOTE: The dotstar feather by default is not connected to the SPI MOSI or SCK pins. 
     /// https://learn.adafruit.com/adafruit-dotstar-featherwing-adafruit/pinouts
     /// </remarks>
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         DotstarWing dotStarWing;
         MicroGraphics graphics;
@@ -38,7 +38,7 @@ namespace FeatherWings.DotstarWing_Sample
             graphics.Show();
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
 
         void DrawPixels()
         {

@@ -7,9 +7,9 @@ using Meadow.Hardware;
 
 namespace FeatherWings.KeyboardWing_Sample
 {
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         MicroGraphics graphics;
 
@@ -79,6 +79,6 @@ namespace FeatherWings.KeyboardWing_Sample
             graphics.Show();
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
     }
 }

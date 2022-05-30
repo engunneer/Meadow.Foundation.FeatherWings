@@ -7,9 +7,9 @@ using Meadow.Foundation.Graphics;
 
 namespace FeatherWings.CharlieWing_Sample
 {
-    public class MeadowApp : App<F7MicroV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2, MeadowApp>
     {
-        //<!—SNIP—>
+        //<!=SNIP=>
 
         CharlieWing charlieWing;
         MicroGraphics graphics;
@@ -28,7 +28,7 @@ namespace FeatherWings.CharlieWing_Sample
             graphics.Show();
         }
 
-        //<!—SNOP—>
+        //<!=SNOP=>
 
         void LightCorners()
         {
