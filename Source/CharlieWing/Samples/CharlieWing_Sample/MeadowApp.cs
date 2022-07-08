@@ -1,31 +1,43 @@
-﻿using System;
-using System.Threading;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FeatherWings.CharlieWing_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
 
         CharlieWing charlieWing;
         MicroGraphics graphics;
 
-        public MeadowApp()
+        public override Task Initialize()
         {
-            Console.WriteLine("Initializing ...");
+            Console.WriteLine("Initialize...");
 
             charlieWing = new CharlieWing(Device.CreateI2cBus());
-            charlieWing.Clear();
 
-            graphics = new MicroGraphics(charlieWing);
-            graphics.CurrentFont = new Font4x8();
+            graphics = new MicroGraphics(charlieWing) 
+            {
+                CurrentFont = new Font4x8()
+            };
+
+            return Task.CompletedTask;
+        }
+
+        public override Task Run()
+        {
+            graphics.Clear();
 
             graphics.DrawText(0, 0, "F7");
+
             graphics.Show();
+
+            return Task.CompletedTask;
         }
 
         //<!=SNOP=>

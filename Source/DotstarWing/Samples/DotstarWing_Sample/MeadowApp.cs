@@ -1,41 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
-using Meadow.Hardware;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FeatherWings.DotstarWing_Sample
 {
     /// <remarks>NOTE: The dotstar feather by default is not connected to the SPI MOSI or SCK pins. 
     /// https://learn.adafruit.com/adafruit-dotstar-featherwing-adafruit/pinouts
     /// </remarks>
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
 
         DotstarWing dotStarWing;
         MicroGraphics graphics;
-        public MeadowApp()
+
+        public override Task Initialize()
         {
-            Console.WriteLine("Initialize hardware...");
-            ISpiBus spiBus = Device.CreateSpiBus();
+            Console.WriteLine("Initialize...");
 
-            dotStarWing = new DotstarWing(spiBus);
+            var spiBus = Device.CreateSpiBus();
+            dotStarWing = new DotstarWing(spiBus) 
+            {
+                Brightness = 0.1f
+            };
+            graphics = new MicroGraphics(dotStarWing) 
+            {
+                CurrentFont = new Font4x6()
+            };
 
-            dotStarWing.Brightness = 0.1f;
+            return Task.CompletedTask;
+        }
 
-            graphics = new MicroGraphics(dotStarWing);
-            graphics.CurrentFont = new Font4x6();
+        public override Task Run()
+        {
+            graphics.Clear();
 
             graphics.DrawRectangle(0, 0, 8, 4, Color.LawnGreen, true);
             graphics.DrawRectangle(2, 2, 8, 4, Color.Cyan, true);
             graphics.DrawText(0, 0, "F7", Color.White);
 
             graphics.Show();
+
+            return Task.CompletedTask;
         }
 
         //<!=SNOP=>
