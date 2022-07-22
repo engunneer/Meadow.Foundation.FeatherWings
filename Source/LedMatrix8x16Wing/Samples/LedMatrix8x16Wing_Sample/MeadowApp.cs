@@ -1,33 +1,45 @@
-﻿using System;
-using System.Threading;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FeatherWings.LedMatrix8x16_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
 
         LedMatrix8x16Wing ledMatrixWing;
         MicroGraphics graphics;
 
-        public MeadowApp()
+        public override Task Initialize()
         {
             Console.WriteLine("Initializing ..");
 
             ledMatrixWing = new LedMatrix8x16Wing(Device.CreateI2cBus());
             ledMatrixWing.Clear();
 
-            graphics = new MicroGraphics(ledMatrixWing);
-            graphics.CurrentFont = new Font4x8();
+            graphics = new MicroGraphics(ledMatrixWing) 
+            {
+                Rotation = RotationType._90Degrees,
+                CurrentFont = new Font4x8()
+            };
 
-            graphics.Rotation = RotationType._90Degrees;
+            return Task.CompletedTask;
+        }
+
+        public override Task Run()
+        {
             graphics.Clear();
+
             graphics.DrawText(0, 0, "M F7");
+
             graphics.Show();
+
+            return Task.CompletedTask;
         }
 
         //<!=SNOP=>

@@ -1,25 +1,27 @@
-﻿using System;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
+using Meadow.Foundation.Sensors.Hid;
 using Meadow.Hardware;
+using System;
+using System.Threading.Tasks;
 
 namespace FeatherWings.KeyboardWing_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
-
-        MicroGraphics graphics;
-
+        
         KeyboardWing keyboardWing;
+        MicroGraphics graphics;
 
         string lastKeyPress;
 
-        public MeadowApp()
+        public override Task Initialize()
         {
             Console.WriteLine("Initializing ...");
+
             var i2cBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
             var spiBus = Device.CreateSpiBus(new Meadow.Units.Frequency(48000, Meadow.Units.Frequency.UnitType.Kilohertz));
 
@@ -32,10 +34,8 @@ namespace FeatherWings.KeyboardWing_Sample
                 displayDcPin: Device.Pins.D12,
                 lightSensorPin: Device.Pins.A05);
 
-            keyboardWing.LightSensor.StartUpdating(new TimeSpan(0, 0, 30));
-
             keyboardWing.TouchScreen.Rotation = RotationType._90Degrees;
-                
+
             graphics = new MicroGraphics(keyboardWing.Display)
             {
                 Rotation = RotationType._90Degrees,
@@ -44,12 +44,21 @@ namespace FeatherWings.KeyboardWing_Sample
 
             keyboardWing.Keyboard.OnKeyEvent += Keyboard_OnKeyEvent;
 
+            return Task.CompletedTask;
+        }
+
+        public override Task Run()
+        {
             graphics.Clear(true);
+
+            keyboardWing.LightSensor.StartUpdating(new TimeSpan(0, 0, 30));
+
+            return Task.CompletedTask;
         }
 
         private void Keyboard_OnKeyEvent(object sender, Meadow.Foundation.Sensors.Hid.BBQ10Keyboard.KeyEvent e)
         {
-            if(e.KeyState == Meadow.Foundation.Sensors.Hid.BBQ10Keyboard.KeyState.StatePress)
+            if (e.KeyState == BBQ10Keyboard.KeyState.StatePress)
             {
                 Console.WriteLine($"OnKeyEvent ASCII value: {(byte)e.AsciiValue}");
 
@@ -67,12 +76,14 @@ namespace FeatherWings.KeyboardWing_Sample
                     _  => e.AsciiValue.ToString()
                 };
             }
+
             UpdateDisplay();
         }
 
         void UpdateDisplay()
         {
             graphics.Clear();
+
             graphics.DrawText(0, 0, $"Last pressed: {lastKeyPress}");
             graphics.DrawText(0, 16, $"Luminance: {keyboardWing.LightSensor.Illuminance.Value.Lux}");
 

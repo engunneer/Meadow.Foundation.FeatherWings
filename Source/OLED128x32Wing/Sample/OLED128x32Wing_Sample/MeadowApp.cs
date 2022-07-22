@@ -1,19 +1,21 @@
-﻿using System;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
+using System;
+using System.Threading.Tasks;
 
 namespace FeatherWings.OLED128x32_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
 
+        OLED128x32Wing oledWing;
         MicroGraphics graphics;
 
-        public MeadowApp()
+        public override Task Initialize()
         {
             Console.WriteLine("Initializing ...");
             var i2cBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
@@ -26,6 +28,8 @@ namespace FeatherWings.OLED128x32_Sample
             oledWing.ButtonA.Clicked += (sender, e) => UpdateDisplay("A pressed");
             oledWing.ButtonB.Clicked += (sender, e) => UpdateDisplay("B pressed");
             oledWing.ButtonC.Clicked += (sender, e) => UpdateDisplay("C pressed");
+
+            return Task.CompletedTask;
         }
 
         void UpdateDisplay(string message)
