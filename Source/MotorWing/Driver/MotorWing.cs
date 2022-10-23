@@ -5,7 +5,7 @@ using System;
 namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
-    /// Represents Adafruit's Feather DC & Stepper Motor Wing
+    /// Represents Adafruit's Feather DC and Stepper Motor Wing
     /// </summary>
     public class MotorWing
     {
@@ -15,16 +15,17 @@ namespace Meadow.Foundation.FeatherWings
         /// Creates a MotorWing driver
         /// </summary>
         /// <param name="i2cBus">i2c bus</param>
-        /// <param name="address">The address of the i2c Peripheral</param>
         /// <param name="frequency">The PWM frequency for the PCA9685 IC</param>
-        public MotorWing(II2cBus i2cBus, byte address = (byte)Pca9685.Addresses.Default, int frequency = 1600)
+        /// <param name="address">The address of the i2c Peripheral</param>
+
+        public MotorWing(II2cBus i2cBus, Units.Frequency frequency, byte address = (byte)Pca9685.Addresses.Default)
         {
             if (i2cBus == null)
             {
                 throw new ArgumentNullException("i2cBus");
             }
 
-            pca9685 = new Pca9685(i2cBus, address, frequency);
+            pca9685 = new Pca9685(i2cBus, frequency, address);
         }
 
         /// <summary>

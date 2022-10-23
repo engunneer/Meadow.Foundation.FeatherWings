@@ -36,10 +36,7 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public byte Frame { get; set; }
 
-        /// <summary>
-        /// Gets/Sets property to ignore boundaries when drawing outside of the LED matrix
-        /// </summary>
-        public bool IgnoreOutOfBoundsPixels { get; set; }
+        public IPixelBuffer PixelBuffer => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a CharlieWing driver
@@ -97,12 +94,6 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="brightness"></param>
         public void DrawPixel(int x, int y, byte brightness)
         {
-            if (IgnoreOutOfBoundsPixels)
-            {
-                if (x < 0 || x >= Width || y < 0 || y >= Height)
-                { return; }
-            }
-
             if (x > 7)
             {
                 x = 15 - x;
@@ -138,7 +129,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="y"></param>
         /// <param name="displayBuffer"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
+        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
         {
             for (int i = 0; i < displayBuffer.Width; i++)
             {
@@ -213,6 +204,17 @@ namespace Meadow.Foundation.FeatherWings
         public void Show(byte frame)
         {   
             iS31FL3731.DisplayFrame(frame);
+        }
+
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
+        {
+            for (int i = 0; i < displayBuffer.Width; i++)
+            {
+                for (int j = 0; j < displayBuffer.Height; j++)
+                {
+                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i,j));
+                }
+            }
         }
     }
 }

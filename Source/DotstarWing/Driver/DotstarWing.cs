@@ -38,13 +38,9 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Gets/Sets property to ignore boundaries when drawing outside of the LED matrix
+        /// Get the offscreen pixel buffer
         /// </summary>
-        public bool IgnoreOutOfBoundsPixels
-        {
-            get => ledMatrix.IgnoreOutOfBoundsPixels;
-            set => ledMatrix.IgnoreOutOfBoundsPixels = value;
-        }
+        public IPixelBuffer PixelBuffer => ledMatrix.PixelBuffer;
 
         /// <summary>
         /// Creates a DotstarWing driver
@@ -85,20 +81,10 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="color"></param>
         public void DrawPixel(int x, int y, Color color)
         {
-            if (IgnoreOutOfBoundsPixels)
-            {
-                if (x < 0 || x >= Width || y < 0 || y >= Height)
-                { return; }
-            }
-
             int minor = x;
-            int major = y;
-            int majorScale;
+            int major = Height - 1 - y;
 
-            major = Height - 1 - major;
-            majorScale = Width;
-
-            int pixelOffset = (major * majorScale) + minor;
+            int pixelOffset = (major * Width) + minor;
 
             if (pixelOffset >= 0 && pixelOffset < Height * Width)
             {
@@ -113,25 +99,15 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="y"></param>
         /// <param name="colored"></param>
         public void DrawPixel(int x, int y, bool colored)
-        {
-            DrawPixel(x, y, colored ? Color.White : Color.Black);
-        }
+            =>  DrawPixel(x, y, colored ? Color.White : Color.Black);
 
         /// <summary>
         /// Invert the color of the pixel at the given location
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void InvertPixel(int x, int y)
-        {
-            if (IgnoreOutOfBoundsPixels)
-            {
-                if (x < 0 || x >= Width || y < 0 || y >= Height)
-                { return; }
-            }
-
-            ledMatrix.InvertPixel(x, y);
-        }
+        public void InvertPixel(int x, int y) 
+            => ledMatrix.InvertPixel(x, y);
 
         /// <summary>
         /// Draw a buffer to the display
@@ -139,10 +115,8 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="displayBuffer"></param>
-        public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
-        {
-            ledMatrix.DrawBuffer(x, y, displayBuffer);
-        }
+        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
+            => ledMatrix.WriteBuffer(x, y, displayBuffer);
 
         /// <summary>
         /// Clear the display.
@@ -150,9 +124,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="fillColor"></param>
         /// <param name="updateDisplay"></param>
         public void Fill(Color fillColor, bool updateDisplay = false)
-        {
-            ledMatrix.Fill(fillColor, updateDisplay);
-        }
+            => ledMatrix.Fill(fillColor, updateDisplay);
 
         /// <summary>
         /// Clear a region of the display
@@ -163,17 +135,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="height"></param>
         /// <param name="fillColor"></param>
         public void Fill(int x, int y, int width, int height, Color fillColor)
-        {
-            ledMatrix.Fill(x, y, width, height, fillColor);
-        }
+            => ledMatrix.Fill(x, y, width, height, fillColor);
 
         /// <summary>
         /// Show changes on the display
         /// </summary>
         public void Show()
-        {
-            ledMatrix.Show();
-        }
+            => ledMatrix.Show();
 
         /// <summary>
         /// Update a region of the display
@@ -183,8 +151,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="right"></param>
         /// <param name="bottom"></param>
         public void Show(int left, int top, int right, int bottom)
-        {
-            ledMatrix.Show(left, top, right, bottom);
-        }
+            => ledMatrix.Show(left, top, right, bottom);
+
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
+            => WriteBuffer(x, y, displayBuffer);
     }
 }
