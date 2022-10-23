@@ -23,9 +23,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="frequency"></param>
         /// <param name="portCount"></param>
         public ServoWing(
-            II2cBus i2cBus, 
+            II2cBus i2cBus,
+            Units.Frequency frequency,
             byte address = (byte)Pca9685.Addresses.Default, 
-            int frequency = 50, 
             short portCount = 8)
         {
             if (portCount != 8 && portCount != 16)
@@ -34,7 +34,7 @@ namespace Meadow.Foundation.FeatherWings
             }
 
             this.portCount = portCount;
-            pca9685 = new Pca9685(i2cBus, address, frequency);
+            pca9685 = new Pca9685(i2cBus, frequency, address);
             pca9685.Initialize();
         }
 
