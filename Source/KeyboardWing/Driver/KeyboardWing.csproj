@@ -17,8 +17,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\icon.png" Pack="true" PackagePath="" />
-    <PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.*" />
-    <PackageReference Include="Meadow.Foundation.Displays.Ssd130x" Version="0.*" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Meadow.Foundation.Displays.TftSpi" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Hid.Bbq10Keyboard" Version="0.*" />
     <PackageReference Include="Meadow.Foundation.Sensors.Hid.Tsc2004" Version="0.*" />

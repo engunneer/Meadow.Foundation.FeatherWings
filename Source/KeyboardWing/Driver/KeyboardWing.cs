@@ -1,5 +1,4 @@
-﻿using Meadow.Devices;
-using Meadow.Foundation.Displays.TftSpi;
+﻿using Meadow.Foundation.Displays;
 using Meadow.Foundation.Sensors.Hid;
 using Meadow.Foundation.Sensors.Light;
 using Meadow.Hardware;

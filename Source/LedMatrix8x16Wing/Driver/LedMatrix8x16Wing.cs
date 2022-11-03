@@ -32,6 +32,8 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public bool IgnoreOutOfBoundsPixels { get; set; }
 
+        public IPixelBuffer PixelBuffer => throw new System.NotImplementedException();
+
         /// <summary>
         /// Creates a LedMatrix8x16Wing driver
         /// </summary>
@@ -119,7 +121,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="y"></param>
         /// <param name="displayBuffer"></param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void DrawBuffer(int x, int y, IDisplayBuffer displayBuffer)
+        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
         {
             throw new System.NotImplementedException();
         }
@@ -175,6 +177,17 @@ namespace Meadow.Foundation.FeatherWings
         {
             //ToDo - should be possible - check UpdateDisplay and adjust starting address
             Show();
+        }
+
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
+        {
+            for (int i = 0; i < displayBuffer.Width; i++)
+            {
+                for (int j = 0; j < displayBuffer.Height; j++)
+                {
+                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i, j));
+                }
+            }
         }
     }
 }

@@ -1,32 +1,30 @@
-﻿using System;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading;
-using Meadow;
+﻿using Meadow;
 using Meadow.Devices;
-using Meadow.Foundation;
 using Meadow.Foundation.FeatherWings;
-using Meadow.Foundation.Leds;
 using Meadow.Hardware;
+using System;
+using System.Threading.Tasks;
 
 namespace FeatherWings.MotorWing_Sample
 {
-    public class MeadowApp : App<F7FeatherV2, MeadowApp>
+    public class MeadowApp : App<F7FeatherV2>
     {
         //<!=SNIP=>
 
         MotorWing motorWing;
 
-        public MeadowApp()
+        public override Task Initialize()
         {
             Console.WriteLine("Initializing ...");
+
             var i2CBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
             motorWing = new MotorWing(i2CBus, 0x61);
             motorWing.Initialize();
 
-            Run();
+            return Task.CompletedTask;
         }
 
-        void Run()
+        public override async Task Run()
         {
             //Get DC motor 1
             var dcMotor1 = motorWing.GetMotor(1);
@@ -47,24 +45,24 @@ namespace FeatherWings.MotorWing_Sample
                 {
                     dcMotor1.SetSpeed(i);
                     dcMotor2.SetSpeed(i);
-                    Thread.Sleep(10);
+                    await Task.Delay(10);
                 }
 
                 stepper.Step(50);
 
-                Thread.Sleep(500);
+                await Task.Delay(500);
 
                 Console.WriteLine("Slow down");
                 for (short i = 255; i >= 0; i--)
                 {
                     dcMotor1.SetSpeed(i);
                     dcMotor2.SetSpeed(i);
-                    Thread.Sleep(10);
+                    await Task.Delay(10);
                 }
 
                 stepper.Step(-50);
 
-                Thread.Sleep(500);
+                await Task.Delay(500);
             }
         }
 

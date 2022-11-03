@@ -16,7 +16,9 @@
     <Description>AdaFruit MotorWing motor controller FeatherWing</Description>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\icon.png" Pack="true" PackagePath="" />  
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Meadow.Foundation.ICs.IOExpanders.Pca9685" Version="0.*" />
   </ItemGroup>
 </Project>
