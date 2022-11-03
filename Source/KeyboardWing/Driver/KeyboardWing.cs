@@ -33,13 +33,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Creates a KeyboardWing driver
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="spiBus"></param>
-        /// <param name="i2cBus"></param>
-        /// <param name="keyboardPin"></param>
-        /// <param name="displayChipSelectPin"></param>
-        /// <param name="displayDcPin"></param>
-        /// <param name="lightSensorPin"></param>
+        /// <param name="device">The Meadow device</param>
+        /// <param name="spiBus">The SPI bus used for the display</param>
+        /// <param name="i2cBus">The I2C bus connected to the device</param>
+        /// <param name="keyboardPin">The pin used to interrupt the keyboard</param>
+        /// <param name="displayChipSelectPin">The chip select pin</param>
+        /// <param name="displayDcPin">The DC pin</param>
+        /// <param name="lightSensorPin">The light sensor pin</param>
         public KeyboardWing(IMeadowDevice device, 
             ISpiBus spiBus, 
             II2cBus i2cBus, 

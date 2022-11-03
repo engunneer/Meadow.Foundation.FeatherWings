@@ -36,13 +36,17 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public byte Frame { get; set; }
 
+        /// <summary>
+        /// The pixel buffer that represents the offscreen buffer
+        /// Not implemented for this driver
+        /// </summary>
         public IPixelBuffer PixelBuffer => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a CharlieWing driver
         /// </summary>
-        /// <param name="i2cBus"></param>
-        /// <param name="address"></param>
+        /// <param name="i2cBus">The I2CBus used by the CharlieWing</param>
+        /// <param name="address">The I2C address</param>
         public CharlieWing(II2cBus i2cBus, byte address = (byte)Is31fl3731.Addresses.Default)
         {
             iS31FL3731 = new Is31fl3731(i2cBus, address);
@@ -56,9 +60,9 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Clear display
+        /// Clear the display buffer
         /// </summary>
-        /// <param name="updateDisplay"></param>
+        /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Clear(bool updateDisplay = false)
         {
             iS31FL3731.Clear(Frame);
@@ -67,9 +71,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on an RGB LED with the specified color on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="color"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="color">The color to draw normalized to black/off or white/on</param>
         public void DrawPixel(int x, int y, Color color)
         {
             DrawPixel(x, y, color.Color8bppGray);
@@ -78,9 +82,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on a LED on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="colored"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="colored">Led is on if true, off if false</param>
         public void DrawPixel(int x, int y, bool colored)
         {
             DrawPixel(x, y, colored ? Color.White : Color.Black);
@@ -89,9 +93,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on LED with the specified brightness on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="brightness"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="brightness">The led brightness from 0-255</param>
         public void DrawPixel(int x, int y, byte brightness)
         {
             if (x > 7)
@@ -105,18 +109,16 @@ namespace Meadow.Foundation.FeatherWings
             }
 
             //Swap
-            var temp = x;
-            x = y;
-            y = temp;
-      
+            (y, x) = (x, y);
+
             iS31FL3731.SetLedPwm(Frame, (byte)(x + y * 16), brightness);
         }
 
         /// <summary>
         /// Invert the color of the pixel at the given location
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
         public void InvertPixel(int x, int y)
         {
             throw new NotImplementedException();
@@ -125,11 +127,10 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Draw a buffer to the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="displayBuffer"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="displayBuffer">The display buffer to draw to the CharlieWing</param>
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
         {
             for (int i = 0; i < displayBuffer.Width; i++)
             {
@@ -141,31 +142,29 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Clear the display.
+        /// Fill the display buffer to a normalized color
         /// </summary>
-        /// <param name="clearColor"></param>
-        /// <param name="updateDisplay"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Fill(Color clearColor, bool updateDisplay = false)
+        /// <param name="fillColor">The clear color which will be normalized to black/off or white/on</param>
+        /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
+        public void Fill(Color fillColor, bool updateDisplay = false)
         {
-            for (int i = 0; i < this.Width; i++)
+            for (int i = 0; i < Width; i++)
             {
-                for (int j = 0;j < this.Height; j++)
+                for (int j = 0;j < Height; j++)
                 {
-                    DrawPixel(i, j, clearColor);
+                    DrawPixel(i, j, fillColor);
                 }
             }
         }
 
         /// <summary>
-        /// Clear the display.
+        /// Fill the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="fillColor"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="width">The width to fill in pixels</param>
+        /// <param name="height">The height to fill in pixels</param>
+        /// <param name="fillColor">The fillColor color which will be normalized to black/off or white/on</param>
         public void Fill(int x, int y, int width, int height, Color fillColor)
         {
             for (int i = 0; i < width; i++)
@@ -178,7 +177,7 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Show changes on the display
+        /// Update the display from the offscreen buffer
         /// </summary>
         public void Show()
         {
@@ -186,35 +185,24 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Show changes on the display
+        /// Update a region of the display from the offscreen buffer 
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="right"></param>
-        /// <param name="bottom"></param>
+        /// <param name="left">The left bounding position in pixels</param>
+        /// <param name="top">The top bounding position in pixels</param>
+        /// <param name="right">The right bounding position in pixels</param>
+        /// <param name="bottom">The bottom bounding position in pixels</param>
         public void Show(int left, int top, int right, int bottom)
         {
             Show();
         }
 
         /// <summary>
-        /// Show changes on the display
+        /// Update the display from a specific iS31FL3731 frame
         /// </summary>
-        /// <param name="frame"></param>
+        /// <param name="frame">The frame to show (0-7)</param>
         public void Show(byte frame)
         {   
             iS31FL3731.DisplayFrame(frame);
-        }
-
-        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
-        {
-            for (int i = 0; i < displayBuffer.Width; i++)
-            {
-                for (int j = 0; j < displayBuffer.Height; j++)
-                {
-                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i,j));
-                }
-            }
         }
     }
 }

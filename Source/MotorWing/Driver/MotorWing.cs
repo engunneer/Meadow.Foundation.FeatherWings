@@ -9,12 +9,12 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public class MotorWing
     {
-        Pca9685 pca9685;
+        readonly Pca9685 pca9685;
 
         /// <summary>
         /// Creates a MotorWing driver
         /// </summary>
-        /// <param name="i2cBus">i2c bus</param>
+        /// <param name="i2cBus">The I2C bus connected to the device</param>
         /// <param name="frequency">The PWM frequency for the PCA9685 IC</param>
         /// <param name="address">The address of the i2c Peripheral</param>
 
@@ -29,7 +29,7 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Initialize the PCA9685
+        /// Initialize the MotorWings
         /// </summary>
         public void Initialize()
         {
