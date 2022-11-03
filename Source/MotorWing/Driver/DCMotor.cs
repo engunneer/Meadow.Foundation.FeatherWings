@@ -9,8 +9,17 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public enum Commmand
     {     
+        /// <summary>
+        /// Move forward
+        /// </summary>
         FORWARD,
+        /// <summary>
+        /// Move backwards
+        /// </summary>
         BACKWARD,
+        /// <summary>
+        /// Release
+        /// </summary>
         RELEASE
     }
 
@@ -74,20 +83,20 @@ namespace Meadow.Foundation.FeatherWings
         {
             if (command == Commmand.FORWARD)
             {
-                _pca9685.SetPin(_in2, false);
-                _pca9685.SetPin(_in1, true);
+                pca9685.SetPin(_in2, false);
+                pca9685.SetPin(_in1, true);
             }
 
             if (command == Commmand.BACKWARD)
             {
-                _pca9685.SetPin(_in2, true);
-                _pca9685.SetPin(_in1, false);
+                pca9685.SetPin(_in2, true);
+                pca9685.SetPin(_in1, false);
             }
 
             if (command == Commmand.RELEASE)
             {
-                _pca9685.SetPin(_in1, false);
-                _pca9685.SetPin(_in2, false);
+                pca9685.SetPin(_in1, false);
+                pca9685.SetPin(_in2, false);
             }
         }
 
@@ -107,7 +116,7 @@ namespace Meadow.Foundation.FeatherWings
                 speed = 255;
             }
 
-            _pca9685.SetPwm(_pwmPin, 0, speed * 16);
+            pca9685.SetPwm(_pwmPin, 0, speed * 16);
         }
 
         /// <summary>
@@ -122,7 +131,7 @@ namespace Meadow.Foundation.FeatherWings
             if (speed < 0)
                 speed = 0;
 
-            _pca9685.SetPwm(_pwmPin, 0, speed);
+            pca9685.SetPwm(_pwmPin, 0, speed);
         }
 
         /// <summary>
@@ -131,7 +140,7 @@ namespace Meadow.Foundation.FeatherWings
         public void Stop()
         {
             Run(Commmand.RELEASE);
-            _pca9685.SetPwm(_pwmPin, 0, 0);
+            pca9685.SetPwm(_pwmPin, 0, 0);
         }
     }
 }

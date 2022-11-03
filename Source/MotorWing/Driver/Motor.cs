@@ -7,21 +7,24 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public abstract class Motor
     {
-        protected readonly Pca9685 _pca9685;
+        /// <summary>
+        /// The pca9685 instance used to control the motor
+        /// </summary>
+        protected readonly Pca9685 pca9685;
 
         /// <summary>
         /// Creates a Motor driver
         /// </summary>
-        /// <param name="pca9685"></param>
+        /// <param name="pca9685">A pca9685 instance</param>
         public Motor(Pca9685 pca9685)
         {
-            _pca9685 = pca9685;
+            this.pca9685 = pca9685;
         }
 
         /// <summary>
-        /// Set speed
+        /// Set the motor speed
         /// </summary>
-        /// <param name="speed"></param>
+        /// <param name="speed">The motor speed</param>
         public abstract void SetSpeed(short speed);
     }
 }

@@ -11,7 +11,7 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public class DotstarWing : IGraphicsDisplay
     {
-        Apa102 ledMatrix;
+        readonly Apa102 ledMatrix;
 
         /// <summary>
         /// Returns the color mode
@@ -45,29 +45,16 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Creates a DotstarWing driver
         /// </summary>
-        /// <param name="spiBus"></param>
-        /// <param name="numberOfLeds"></param>
-        /// <param name="pixelOrder"></param>
-        public DotstarWing(
-            ISpiBus spiBus, 
-            int numberOfLeds, 
-            PixelOrder pixelOrder = PixelOrder.BGR)
+        /// <param name="spiBus">The SPI bus used by the Dotstar Wing</param>
+        public DotstarWing(ISpiBus spiBus)
         {
-            ledMatrix = new Apa102(spiBus, numberOfLeds, pixelOrder);
+            ledMatrix = new Apa102(spiBus, 72, PixelOrder.BGR);
         }
 
         /// <summary>
-        /// Creates a DotstarWing driver
+        /// Clear the RGB LED Matrix buffer
         /// </summary>
-        /// <param name="spiBus"></param>
-        public DotstarWing(ISpiBus spiBus) 
-            : this(spiBus, 72)
-        { }
-
-        /// <summary>
-        /// Clear the RGB LED Matrix
-        /// </summary>
-        /// <param name="updateDisplay"></param>
+        /// <param name="updateDisplay">If true, update the display, if false, only clear the buffer</param>
         public void Clear(bool updateDisplay = false)
         {
             ledMatrix.Clear(updateDisplay);
@@ -76,9 +63,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on an RGB LED with the specified color on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="color"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="color">The color to draw normalized to black/off or white/on</param>
         public void DrawPixel(int x, int y, Color color)
         {
             int minor = x;
@@ -95,65 +82,62 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on a LED on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="colored"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="colored">Led is on if true, off if false</param>
         public void DrawPixel(int x, int y, bool colored)
             =>  DrawPixel(x, y, colored ? Color.White : Color.Black);
 
         /// <summary>
         /// Invert the color of the pixel at the given location
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
         public void InvertPixel(int x, int y) 
             => ledMatrix.InvertPixel(x, y);
 
         /// <summary>
         /// Draw a buffer to the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="displayBuffer"></param>
-        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="displayBuffer">The display buffer to draw to the CharlieWing</param>
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
             => ledMatrix.WriteBuffer(x, y, displayBuffer);
 
         /// <summary>
-        /// Clear the display.
+        /// Fill the display buffer to a normalized color
         /// </summary>
-        /// <param name="fillColor"></param>
-        /// <param name="updateDisplay"></param>
+        /// <param name="fillColor">The clear color which will be normalized to black/off or white/on</param>
+        /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Fill(Color fillColor, bool updateDisplay = false)
             => ledMatrix.Fill(fillColor, updateDisplay);
 
         /// <summary>
-        /// Clear a region of the display
+        /// Fill the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="fillColor"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="width">The width to fill in pixels</param>
+        /// <param name="height">The height to fill in pixels</param>
+        /// <param name="fillColor">The fillColor color which will be normalized to black/off or white/on</param>
         public void Fill(int x, int y, int width, int height, Color fillColor)
             => ledMatrix.Fill(x, y, width, height, fillColor);
 
         /// <summary>
-        /// Show changes on the display
+        /// Update the display from the offscreen buffer
         /// </summary>
         public void Show()
             => ledMatrix.Show();
 
         /// <summary>
-        /// Update a region of the display
+        /// Update a region of the display from the offscreen buffer 
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="right"></param>
-        /// <param name="bottom"></param>
+        /// <param name="left">The left bounding position in pixels</param>
+        /// <param name="top">The top bounding position in pixels</param>
+        /// <param name="right">The right bounding position in pixels</param>
+        /// <param name="bottom">The bottom bounding position in pixels</param>
         public void Show(int left, int top, int right, int bottom)
             => ledMatrix.Show(left, top, right, bottom);
-
-        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
-            => WriteBuffer(x, y, displayBuffer);
     }
 }

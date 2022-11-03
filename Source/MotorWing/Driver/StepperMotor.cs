@@ -9,9 +9,21 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public enum Style
     {
+        /// <summary>
+        /// Single
+        /// </summary>
         SINGLE = 1,
+        /// <summary>
+        /// Double
+        /// </summary>
         DOUBLE = 2,
+        /// <summary>
+        /// Interleave
+        /// </summary>
         INTERLEAVE = 3,
+        /// <summary>
+        /// Microstep
+        /// </summary>
         MICROSTEP = 4
     }
 
@@ -20,7 +32,13 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public enum Direction
     {
+        /// <summary>
+        /// Forward motor direction
+        /// </summary>
         FORWARD,
+        /// <summary>
+        /// Backwards moto direction
+        /// </summary>
         BACKWARD
     }
 
@@ -248,8 +266,8 @@ namespace Meadow.Foundation.FeatherWings
             _currentstep += MICROSTEPS * 4;
             _currentstep %= MICROSTEPS * 4;
 
-            _pca9685.SetPwm(_pwmA, 0, ocra * 16);
-            _pca9685.SetPwm(_pwmB, 0, ocrb * 16);
+            pca9685.SetPwm(_pwmA, 0, ocra * 16);
+            pca9685.SetPwm(_pwmB, 0, ocrb * 16);
 
             // release all
             int latch_state = 0; // all motor pins to 0
@@ -299,38 +317,38 @@ namespace Meadow.Foundation.FeatherWings
 
             if ((latch_state & 0x1) == 0x1)
             {
-                _pca9685.SetPin(_AIN2, true);
+                pca9685.SetPin(_AIN2, true);
             }
             else
             {
-                _pca9685.SetPin(_AIN2, false);
+                pca9685.SetPin(_AIN2, false);
             }
 
             if ((latch_state & 0x2)== 0x2)
             {
-                _pca9685.SetPin(_BIN1, true);
+                pca9685.SetPin(_BIN1, true);
             }
             else
             {
-                _pca9685.SetPin(_BIN1, false);
+                pca9685.SetPin(_BIN1, false);
             }
 
             if ((latch_state & 0x4)== 0x4)
             {
-                _pca9685.SetPin(_AIN1, true);
+                pca9685.SetPin(_AIN1, true);
             }
             else
             {
-                _pca9685.SetPin(_AIN1, false);
+                pca9685.SetPin(_AIN1, false);
             }
 
             if ((latch_state & 0x8)== 0x8)
             {
-                _pca9685.SetPin(_BIN2, true);
+                pca9685.SetPin(_BIN2, true);
             }
             else
             {
-                _pca9685.SetPin(_BIN2, false);
+                pca9685.SetPin(_BIN2, false);
             }
 
             return _currentstep;
