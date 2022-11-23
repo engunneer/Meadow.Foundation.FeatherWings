@@ -10,7 +10,7 @@ namespace Meadow.Foundation.FeatherWings
     /// </summary>
     public class LedMatrix8x16Wing : IGraphicsDisplay
     {
-        Ht16k33 ht16k33;
+        readonly Ht16k33 ht16k33;
 
         /// <summary>
         /// Returns the color mode
@@ -32,22 +32,26 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public bool IgnoreOutOfBoundsPixels { get; set; }
 
+        /// <summary>
+        /// The pixel buffer that represents the offscreen buffer
+        /// Not implemented for this driver
+        /// </summary>
         public IPixelBuffer PixelBuffer => throw new System.NotImplementedException();
 
         /// <summary>
         /// Creates a LedMatrix8x16Wing driver
         /// </summary>
-        /// <param name="i2cBus"></param>
-        /// <param name="address"></param>
+        /// <param name="i2cBus">The I2CBus used by the CharlieWing</param>
+        /// <param name="address">The I2C address</param>
         public LedMatrix8x16Wing(II2cBus i2cBus, byte address = (byte)Ht16k33.Addresses.Default)
         {
             ht16k33 = new Ht16k33(i2cBus, address);
         }
 
         /// <summary>
-        /// Clear the RGB LED Matrix
+        /// Clear the RGB LED Matrix offscreen buffer
         /// </summary>
-        /// <param name="updateDisplay"></param>
+        /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Clear(bool updateDisplay = false)
         {
             ht16k33.ClearDisplay();
@@ -56,9 +60,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on an RGB LED with the specified color on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="color"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="color">The color to draw normalized to black/off or white/on</param>
         public void DrawPixel(int x, int y, Color color)
         {
             DrawPixel(x, y, color.Color1bpp);
@@ -67,9 +71,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Turn on a LED on (x,y) coordinates
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="colored"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="colored">Led is on if true, off if false</param>
         public void DrawPixel(int x, int y, bool colored)
         {
             if (IgnoreOutOfBoundsPixels)
@@ -92,8 +96,8 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Invert the color of the pixel at the given location
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
         public void InvertPixel(int x, int y)
         {
             if (IgnoreOutOfBoundsPixels)
@@ -117,20 +121,25 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Draw a buffer to the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="displayBuffer"></param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public void DrawBuffer(int x, int y, IPixelBuffer displayBuffer)
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="displayBuffer">The display buffer to draw to the display</param>
+        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
         {
-            throw new System.NotImplementedException();
+            for (int i = 0; i < displayBuffer.Width; i++)
+            {
+                for (int j = 0; j < displayBuffer.Height; j++)
+                {
+                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i, j));
+                }
+            }
         }
 
         /// <summary>
-        /// Clear the display.
+        /// Fill the display buffer to a normalized color
         /// </summary>
-        /// <param name="fillColor"></param>
-        /// <param name="updateDisplay"></param>
+        /// <param name="fillColor">The clear color which will be normalized to black/off or white/on</param>
+        /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Fill(Color fillColor, bool updateDisplay = false)
         {
             Fill(0, 0, Width, Height, fillColor);
@@ -139,13 +148,13 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Clear a region of the display
+        /// Fill the display
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="fillColor"></param>
+        /// <param name="x">The x position in pixels 0 indexed from the left</param>
+        /// <param name="y">The y position in pixels 0 indexed from the top</param>
+        /// <param name="width">The width to fill in pixels</param>
+        /// <param name="height">The height to fill in pixels</param>
+        /// <param name="fillColor">The fillColor color which will be normalized to black/off or white/on</param>
         public void Fill(int x, int y, int width, int height, Color fillColor)
         {
             bool isColored = fillColor.Color1bpp;
@@ -167,27 +176,16 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Update a region of the display
+        /// Update a region of the display from the offscreen buffer 
+        /// Currently always redraws the entire display
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
-        /// <param name="right"></param>
-        /// <param name="bottom"></param>
+        /// <param name="left">The left bounding position in pixels</param>
+        /// <param name="top">The top bounding position in pixels</param>
+        /// <param name="right">The right bounding position in pixels</param>
+        /// <param name="bottom">The bottom bounding position in pixels</param>
         public void Show(int left, int top, int right, int bottom)
-        {
-            //ToDo - should be possible - check UpdateDisplay and adjust starting address
+        {   //ToDo - should be possible - check UpdateDisplay and adjust starting address
             Show();
-        }
-
-        public void WriteBuffer(int x, int y, IPixelBuffer displayBuffer)
-        {
-            for (int i = 0; i < displayBuffer.Width; i++)
-            {
-                for (int j = 0; j < displayBuffer.Height; j++)
-                {
-                    DrawPixel(x + i, y + j, displayBuffer.GetPixel(i, j));
-                }
-            }
         }
     }
 }

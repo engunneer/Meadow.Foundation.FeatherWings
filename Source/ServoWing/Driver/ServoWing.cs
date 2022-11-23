@@ -11,7 +11,7 @@ namespace Meadow.Foundation.FeatherWings
     /// <remarks>All PWM channels run at the same Frequency</remarks>
     public class ServoWing 
     {
-        Pca9685 pca9685;
+        readonly Pca9685 pca9685;
 
         readonly short portCount;
 
