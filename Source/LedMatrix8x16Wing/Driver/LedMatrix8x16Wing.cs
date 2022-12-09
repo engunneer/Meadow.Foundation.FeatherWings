@@ -8,7 +8,7 @@ namespace Meadow.Foundation.FeatherWings
     /// <summary>
     /// Represents an Adafruit Led Matrix 8x16 feather wing (HT16K33)
     /// </summary>
-    public class LedMatrix8x16Wing : IGraphicsDisplay
+    public partial class LedMatrix8x16Wing : IGraphicsDisplay
     {
         readonly Ht16k33 ht16k33;
 
@@ -36,7 +36,7 @@ namespace Meadow.Foundation.FeatherWings
         /// The pixel buffer that represents the offscreen buffer
         /// Not implemented for this driver
         /// </summary>
-        public IPixelBuffer PixelBuffer => throw new System.NotImplementedException();
+        public IPixelBuffer PixelBuffer => this;
 
         /// <summary>
         /// Creates a LedMatrix8x16Wing driver
@@ -53,6 +53,14 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Clear(bool updateDisplay = false)
+        {
+            ht16k33.ClearDisplay();
+        }
+
+        /// <summary>
+        /// Clear the RGB LED Matrix offscreen buffer
+        /// </summary>
+        public void Clear()
         {
             ht16k33.ClearDisplay();
         }
