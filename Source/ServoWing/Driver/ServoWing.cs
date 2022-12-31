@@ -1,6 +1,7 @@
 ﻿using Meadow.Foundation.ICs.IOExpanders;
 using Meadow.Foundation.Servos;
 using Meadow.Hardware;
+using Meadow.Units;
 using System;
 
 namespace Meadow.Foundation.FeatherWings
@@ -20,11 +21,21 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         /// <param name="i2cBus"></param>
         /// <param name="address"></param>
+        /// <param name="portCount"></param>
+        public ServoWing(II2cBus i2cBus, byte address = (byte)Pca9685.Addresses.Default, short portCount = 8)
+        : this(i2cBus, new Frequency(IPwmOutputController.DefaultPwmFrequency, Frequency.UnitType.Hertz), address, portCount)
+        { }
+
+        /// <summary>
+        /// Creates a ServoWing driver
+        /// </summary>
+        /// <param name="i2cBus"></param>
+        /// <param name="address"></param>
         /// <param name="frequency"></param>
         /// <param name="portCount"></param>
         public ServoWing(
             II2cBus i2cBus,
-            Units.Frequency frequency,
+            Frequency frequency,
             byte address = (byte)Pca9685.Addresses.Default, 
             short portCount = 8)
         {
@@ -43,8 +54,6 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         /// <param name="portIndex"></param>
         /// <param name="servoConfig"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
         public Servo GetServo(byte portIndex, ServoConfig servoConfig)
         {
             if ((portIndex < 0) || (portIndex > portCount))
