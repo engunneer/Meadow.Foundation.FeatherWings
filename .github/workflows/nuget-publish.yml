@@ -1,10 +1,11 @@
 name: Package Creation
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]"
 
 env:
-  version: '0.90.0'
   token: ${{ secrets.NUGET_TOKEN }}
 
 jobs:
@@ -14,62 +15,62 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set VERSION variable from env.version
-      run: echo "VERSION=${{ env.version }}" >> $GITHUB_ENV
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.CharlieWing
         path: Source/CharlieWing/Driver/CharlieWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.DotstarWing
         path: Source/DotstarWing/Driver/DotstarWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.GPSWing
         path: Source/GPSWing/Driver/GPSWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.KeyboardWing
         path: Source/KeyboardWing/Driver/KeyboardWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.LedMatrix8x16Wing
         path: Source/LedMatrix8x16Wing/Driver/LedMatrix8x16Wing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.MotorWing
         path: Source/MotorWing/Driver/MotorWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.OLED128x32Wing
         path: Source/OLED128x32Wing/Driver/OLED128x32Wing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
     - uses: ./.github/actions/build-package
       with:
         packageId: Meadow.Foundation.FeatherWings.ServoWing
         path: Source/ServoWing/Driver/ServoWing.csproj
-        version: ${{ env.version }}
+        version: ${ VERSION }
         token: ${{ env.token }}
 
