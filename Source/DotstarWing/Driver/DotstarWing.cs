@@ -16,7 +16,12 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Returns the color mode
         /// </summary>
-        public ColorType ColorMode => ColorType.Format12bppRgb444;
+        public ColorMode ColorMode => ColorMode.Format12bppRgb444;
+
+        /// <summary>
+        /// Color modes supported by the device
+        /// </summary>
+        public ColorMode SupportedColorModes => ColorMode.Format12bppRgb444;
 
         /// <summary>
         /// Returns the width of the RGB LED matrix

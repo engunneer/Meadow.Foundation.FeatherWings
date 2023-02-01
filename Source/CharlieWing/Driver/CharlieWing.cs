@@ -19,7 +19,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Color mode of display
         /// </summary>
-        public ColorType ColorMode => ColorType.Format8bppGray;
+        public ColorMode ColorMode => ColorMode.Format8bppGray;
 
         /// <summary>
         /// Width of display in pixels
@@ -41,6 +41,11 @@ namespace Meadow.Foundation.FeatherWings
         /// Not implemented for this driver
         /// </summary>
         public IPixelBuffer PixelBuffer => throw new NotImplementedException();
+
+        /// <summary>
+        /// Color modes supported by the device
+        /// </summary>
+        public ColorMode SupportedColorModes => ColorMode.Format8bppGray;
 
         /// <summary>
         /// Creates a CharlieWing driver
