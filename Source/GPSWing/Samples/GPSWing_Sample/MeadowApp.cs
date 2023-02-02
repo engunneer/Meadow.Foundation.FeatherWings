@@ -19,7 +19,7 @@ namespace MeadowApp
             Console.WriteLine("Initialize...");
 
             var serial = Device.CreateSerialMessagePort(
-                Device.SerialPortNames.Com4,
+                Device.PlatformOS.GetSerialPortName("Com4"),
                 suffixDelimiter: Encoding.ASCII.GetBytes("\r\n"),
                 preserveDelimiter: true,
                 baudRate: 9600);
