@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Meadow.Core\Source\implementations\f7\Meadow.F7\Meadow.F7.csproj" />
-    <PackageReference Include="Meadow.Foundation.FeatherWings.DotstarWing" Version="0.*" />
+    <ProjectReference Include="..\..\Driver\DotstarWing.csproj" />
     <ProjectReference Include="..\..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Graphics.MicroGraphics\Driver\Graphics.MicroGraphics.csproj" />
   </ItemGroup>
 </Project>
