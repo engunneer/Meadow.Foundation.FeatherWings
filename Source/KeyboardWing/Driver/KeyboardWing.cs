@@ -33,14 +33,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Creates a KeyboardWing driver
         /// </summary>
-        /// <param name="device">The Meadow device</param>
         /// <param name="spiBus">The SPI bus used for the display</param>
         /// <param name="i2cBus">The I2C bus connected to the device</param>
         /// <param name="keyboardPin">The pin used to interrupt the keyboard</param>
         /// <param name="displayChipSelectPin">The chip select pin</param>
         /// <param name="displayDcPin">The DC pin</param>
         /// <param name="lightSensorPin">The light sensor pin</param>
-        public KeyboardWing(IMeadowDevice device, 
+        public KeyboardWing( 
             ISpiBus spiBus, 
             II2cBus i2cBus, 
             IPin keyboardPin, 
@@ -48,7 +47,7 @@ namespace Meadow.Foundation.FeatherWings
             IPin displayDcPin,
             IPin lightSensorPin)
         {
-            Keyboard = new BBQ10Keyboard(device, i2cBus, keyboardPin);
+            Keyboard = new BBQ10Keyboard(i2cBus, keyboardPin);
 
             TouchScreen = new Tsc2004(i2cBus)
             {
@@ -62,7 +61,6 @@ namespace Meadow.Foundation.FeatherWings
 
             Display = new Ili9341
             (
-                device: device,
                 spiBus: spiBus,
                 chipSelectPin: displayChipSelectPin, // Device.Pins.D11,
                 dcPin: displayDcPin, // Device.Pins.D12,
@@ -70,7 +68,7 @@ namespace Meadow.Foundation.FeatherWings
                 width: 240, height: 320
             );
 
-            LightSensor = new AnalogLightSensor(device, lightSensorPin);
+            LightSensor = new AnalogLightSensor(lightSensorPin);
         }
     }
 }

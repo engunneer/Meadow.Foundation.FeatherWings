@@ -49,15 +49,14 @@ namespace Meadow.Foundation.FeatherWings
         /// Creates a OLED128x32Wing driver
         /// </summary>
         /// <param name="i2cBus">The I2C bus connected to the wing</param>
-        /// <param name="device">The device connected to the wing</param>
         /// <param name="pinA">The pin used for button A</param>
         /// <param name="pinB">The pin used for button B</param>
         /// <param name="pinC">The pin used for button C</param>
-        public OLED128x32Wing(II2cBus i2cBus, IDigitalInputController device, IPin pinA, IPin pinB, IPin pinC) : 
-            this(i2cBus, 
-                device.CreateDigitalInputPort(pinA, InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
-                device.CreateDigitalInputPort(pinB, InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
-                device.CreateDigitalInputPort(pinC, InterruptMode.EdgeBoth, ResistorMode.InternalPullUp))
+        public OLED128x32Wing(II2cBus i2cBus, IPin pinA, IPin pinB, IPin pinC) : 
+            this(i2cBus,
+                pinA.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
+                pinB.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
+                pinC.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp))
         { }
     }
 }

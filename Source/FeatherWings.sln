@@ -93,6 +93,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leds.Apa102", "..\..\Meadow
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Displays.Ssd130x", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Displays.Ssd130x\Driver\Displays.Ssd130x.csproj", "{EF231FE5-3C87-469F-B5D9-065C32AA993D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Foundation.Core", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Core\Meadow.Foundation.Core.csproj", "{694940BF-DBE9-4650-AD84-6B69C5D6088A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -267,6 +269,12 @@ Global
 		{EF231FE5-3C87-469F-B5D9-065C32AA993D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF231FE5-3C87-469F-B5D9-065C32AA993D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF231FE5-3C87-469F-B5D9-065C32AA993D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -308,6 +316,7 @@ Global
 		{9E95F289-F4FB-4530-B92B-D2D78C772E89} = {BB1A7E97-4559-459B-BDF8-4ED41758AB29}
 		{B7159B77-A8B2-42B3-80B8-A62DEA13AB31} = {BB1A7E97-4559-459B-BDF8-4ED41758AB29}
 		{EF231FE5-3C87-469F-B5D9-065C32AA993D} = {BB1A7E97-4559-459B-BDF8-4ED41758AB29}
+		{694940BF-DBE9-4650-AD84-6B69C5D6088A} = {BB1A7E97-4559-459B-BDF8-4ED41758AB29}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {673CD5FD-E4C7-48D7-85EA-3CB6FAD87939}
