@@ -26,7 +26,6 @@ namespace FeatherWings.KeyboardWing_Sample
             var spiBus = Device.CreateSpiBus(new Meadow.Units.Frequency(48000, Meadow.Units.Frequency.UnitType.Kilohertz));
 
             keyboardWing = new KeyboardWing(
-                device: Device,
                 spiBus: spiBus,
                 i2cBus: i2cBus,
                 keyboardPin: Device.Pins.D10,
