@@ -19,7 +19,7 @@ namespace FeatherWings.NeoPixel_Sample
         {
             Console.WriteLine("Initializing ...");
 
-            neoWing = new NeoPixelWing(Device.CreateSpiBus(), Device.Pins.D10);
+            neoWing = new NeoPixelWing(Device.CreateSpiBus());
 
             graphics = new MicroGraphics(neoWing);
 
@@ -28,9 +28,9 @@ namespace FeatherWings.NeoPixel_Sample
 
         public override Task Run()
         {
-         //   graphics.Clear();
+            graphics.Clear();
 
-            graphics.DrawRectangle(0, 0, 8, 4, Color.Red.WithBrightness(0.1), false);
+            graphics.DrawRectangle(0, 0, 8, 4, false);
 
             graphics.Show();
 

@@ -46,10 +46,9 @@ namespace Meadow.Foundation.FeatherWings
         /// Creates a NeoPixelWing driver instance
         /// </summary>
         /// <param name="spiBus">The SPI bus connected to the wing</param>
-        /// <param name="chipSelectPin">The chip select pin</param>
-        public NeoPixelWing(ISpiBus spiBus, IPin chipSelectPin)
+        public NeoPixelWing(ISpiBus spiBus)
         {
-            Leds = new Ws2812(spiBus, chipSelectPin, 32);
+            Leds = new Ws2812(spiBus, 32);
             PixelBuffer = new BufferRgb888(8, 4);
         }
 

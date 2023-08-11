@@ -36,7 +36,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="portA">The digital port for button A</param>
         /// <param name="portB">The digital port for button B</param>
         /// <param name="portC">The digital port for button C</param>
-        public OLED128x32Wing(II2cBus i2cBus, IDigitalInputPort portA, IDigitalInputPort portB, IDigitalInputPort portC)
+        public OLED128x32Wing(II2cBus i2cBus, IDigitalInterruptPort portA, IDigitalInterruptPort portB, IDigitalInterruptPort portC)
         {
             Display = new Ssd1306(i2cBus, (byte)Ssd1306.Addresses.Default, Ssd1306.DisplayType.OLED128x32);
 
@@ -54,9 +54,9 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="pinC">The pin used for button C</param>
         public OLED128x32Wing(II2cBus i2cBus, IPin pinA, IPin pinB, IPin pinC) : 
             this(i2cBus,
-                pinA.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
-                pinB.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
-                pinC.CreateDigitalInputPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp))
+                pinA.CreateDigitalInterruptPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
+                pinB.CreateDigitalInterruptPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp),
+                pinC.CreateDigitalInterruptPort(InterruptMode.EdgeBoth, ResistorMode.InternalPullUp))
         { }
     }
 }
