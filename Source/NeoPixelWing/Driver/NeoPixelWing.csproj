@@ -1,24 +1,25 @@
-<Project Sdk="Meadow.Sdk/1.1.0">
+﻿<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>icon.png</PackageIcon>
     <Authors>Wilderness Labs, Inc</Authors>
     <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
-    <AssemblyName>MotorWing</AssemblyName>
+    <AssemblyName>NeoPixelWing</AssemblyName>
     <Company>Wilderness Labs, Inc</Company>
     <PackageProjectUrl>http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/</PackageProjectUrl>
-    <PackageId>Meadow.Foundation.FeatherWings.MotorWing</PackageId>
+    <PackageId>Meadow.Foundation.FeatherWings.NeoPixelWing</PackageId>
     <RepositoryUrl>https://github.com/WildernessLabs/Meadow.Foundation.FeatherWings</RepositoryUrl>
-    <PackageTags>Meadow.Foundation, FeatherWing, MotorWing, Motor Driver</PackageTags>
-    <Version>0.1.39</Version>
+    <PackageTags>Meadow.Foundation,FeatherWing,NeoPixel,WS2812</PackageTags>
+    <Version>0.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>AdaFruit MotorWing motor controller FeatherWing</Description>
+    <Description>AdaFruit NeoPixel FeatherWing</Description>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Pca9685\Driver\ICs.IOExpanders.Pca9685.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Libraries_and_Frameworks\Graphics.MicroGraphics\Driver\Graphics.MicroGraphics.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Leds.Ws2812\Driver\Leds.Ws2812.csproj" />
   </ItemGroup>
 </Project>
