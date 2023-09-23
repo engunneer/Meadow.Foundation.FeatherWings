@@ -20,6 +20,13 @@ namespace NineDofImuWing_Sample
 
             var i2cBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
 
+            nineDofImuWing = new NineDofImuWing(i2cBus);
+
+            nineDofImuWing.Lsm6dsox.StartUpdating();
+            nineDofImuWing.Lis3Mdl.StartUpdating();
+
+            nineDofImuWing.Lsm6dsox.Updated += (sender, eventArgs) => { };
+            nineDofImuWing.Lis3Mdl.Updated += (sender, eventArgs) => { };
 
             return Task.CompletedTask;
         }
@@ -27,6 +34,8 @@ namespace NineDofImuWing_Sample
         public override Task Run()
         {
             Resolver.Log.Info("Run...");
+
+            // TODO: Follow example of Lsm6dsox sample, but for more sensors.
 
             return new Task(() => { });
         }
