@@ -1,18 +1,30 @@
 ﻿using Meadow.Peripherals.Sensors.Motion;
 using Meadow.Hardware;
-using Meadow.Foundation.Sensors.Accelerometers;
+using Meadow.Foundation.Sensors.Motion;
 using Meadow.Units;
 using System;
+using Meadow.Peripherals.Sensors;
+using System.Threading.Tasks;
 
 namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
     /// Represents Adafruit's 9-DOF IMU FeatherWing
     /// </summary>
-    public class NineDofImuWing
+    public class NineDofImuWing : 
+        PollingSensorBase<(Acceleration3D? Acceleration3D, AngularVelocity3D? AngularVelocity3D, MagneticField3D? MagneticField3D)>,
+        IAccelerometer, IGyroscope, IMagnetometer
     {
         public Lis3Mdl Lis3Mdl { get; private set; }
         public Lsm6dsox Lsm6dsox { get; private set; }
+
+        public override TimeSpan UpdateInterval => ((ISamplingSensor<Acceleration3D>)Lsm6dsox).UpdateInterval;
+
+        public new bool IsSampling => Lsm6dsox.IsSampling && Lis3Mdl.IsSampling;
+
+        public Acceleration3D? Acceleration3D => ((IAccelerometer)Lsm6dsox).Acceleration3D;
+        public AngularVelocity3D? AngularVelocity3D => ((IGyroscope)Lsm6dsox).AngularVelocity3D;
+        public MagneticField3D? MagneticField3D => ((IMagnetometer)Lis3Mdl).MagneticField3D;
 
         /// <summary>
         /// Represents Adafruit's 9-DOF IMU FeatherWing with an <see cref="Lsm6dsox"/> Accelerometer/Gyroscope and an <see cref="Lis3Mdl"/> Magnetometer.
@@ -32,6 +44,51 @@ namespace Meadow.Foundation.FeatherWings
             Lis3Mdl = new Lis3Mdl(i2cBus, (byte)(alternateMagAddress ? Lsm6dsox.Addresses.Address_0x6B : Lsm6dsox.Addresses.Default));
         }
 
-        // TODO: Convenience methods for using these sensors together.
+        public event EventHandler<IChangeResult<Acceleration3D>> Acceleration3DUpdated
+        {
+            add => ((IAccelerometer)Lsm6dsox).Acceleration3DUpdated += value;
+            remove => ((IAccelerometer)Lsm6dsox).Acceleration3DUpdated -= value;
+        }
+
+        public event EventHandler<IChangeResult<AngularVelocity3D>> AngularVelocity3DUpdated
+        {
+            add => ((IGyroscope)Lsm6dsox).AngularVelocity3DUpdated += value;
+            remove => ((IGyroscope)Lsm6dsox).AngularVelocity3DUpdated -= value;
+        }
+
+        public event EventHandler<IChangeResult<MagneticField3D>> MagneticField3DUpdated
+        {
+            add => ((IMagnetometer)Lis3Mdl).MagneticField3DUpdated += value;
+            remove => ((IMagnetometer)Lis3Mdl).MagneticField3DUpdated -= value;
+        }
+
+        public override void StartUpdating(TimeSpan? updateInterval = null)
+        {
+            Lsm6dsox.StartUpdating(updateInterval);
+            Lis3Mdl.StartUpdating(updateInterval);
+        }
+
+        public override void StopUpdating()
+        {
+            Lsm6dsox.StopUpdating();
+            Lis3Mdl.StopUpdating();
+        }
+
+        Task<Acceleration3D> ISensor<Acceleration3D>.Read() => ((ISensor<Acceleration3D>)Lsm6dsox).Read();
+        Task<AngularVelocity3D> ISensor<AngularVelocity3D>.Read() => ((ISensor<AngularVelocity3D>)Lsm6dsox).Read();
+        Task<MagneticField3D> ISensor<MagneticField3D>.Read() => ((ISensor<MagneticField3D>)Lis3Mdl).Read();
+        protected override Task<(Acceleration3D? Acceleration3D, AngularVelocity3D? AngularVelocity3D, MagneticField3D? MagneticField3D)> ReadSensor()
+        {
+            (Acceleration3D? Acceleration3D, AngularVelocity3D? AngularVelocity3D, MagneticField3D? MagneticField3D) conditions;
+
+            var sensor1 = Lsm6dsox.Read().Result;
+            var sensor2 = Lis3Mdl.Read().Result;
+
+            conditions.Acceleration3D = sensor1.Acceleration3D;
+            conditions.AngularVelocity3D = sensor1.AngularVelocity3D;
+            conditions.MagneticField3D = sensor2;
+
+            return Task.FromResult(conditions);
+        }
     }
 }
