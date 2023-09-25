@@ -1,0 +1,14 @@
+<Project Sdk="Meadow.Sdk/1.1.0">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>NineDofImuWing</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Meadow.Foundation" Version="*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Motion.Lis3Mdl\Driver\Sensors.Motion.Lis3Mdl.csproj" />
+    <ProjectReference Include="..\..\..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\Sensors.Motion.Lsm6Dsox\Driver\Sensors.Motion.Lsm6Dsox.csproj" />
+  </ItemGroup>
+</Project>
