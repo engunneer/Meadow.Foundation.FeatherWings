@@ -1,6 +1,6 @@
-# Meadow.Foundation.NineDofImuWing
+# Meadow.Foundation.FeatherWings.NineDofImuWing
 
-****
+**AdaFruit I2C ST 9-DoF IMU FeatherWing**
 
 The **NineDofImuWing** library is designed for the [Wilderness Labs](www.wildernesslabs.co) Meadow .NET IoT platform and is part of [Meadow.Foundation](https://developer.wildernesslabs.co/Meadow/Meadow.Foundation/).
 
