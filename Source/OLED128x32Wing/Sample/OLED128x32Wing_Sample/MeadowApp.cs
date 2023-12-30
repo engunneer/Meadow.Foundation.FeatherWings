@@ -3,7 +3,6 @@ using Meadow.Devices;
 using Meadow.Foundation.FeatherWings;
 using Meadow.Foundation.Graphics;
 using Meadow.Hardware;
-using System;
 using System.Threading.Tasks;
 
 namespace FeatherWings.OLED128x32_Sample
@@ -17,7 +16,7 @@ namespace FeatherWings.OLED128x32_Sample
 
         public override Task Initialize()
         {
-            Console.WriteLine("Initializing ...");
+            Resolver.Log.Info("Initializing...");
             var i2cBus = Device.CreateI2cBus(I2cBusSpeed.FastPlus);
 
             oledWing = new OLED128x32Wing(i2cBus, Device.Pins.D11, Device.Pins.D10, Device.Pins.D09);
@@ -25,9 +24,10 @@ namespace FeatherWings.OLED128x32_Sample
             graphics = new MicroGraphics(oledWing.Display);
             graphics.CurrentFont = new Font12x16();
 
-            oledWing.ButtonA.Clicked += (sender, e) => UpdateDisplay("A pressed");
-            oledWing.ButtonB.Clicked += (sender, e) => UpdateDisplay("B pressed");
-            oledWing.ButtonC.Clicked += (sender, e) => UpdateDisplay("C pressed");
+            oledWing.ButtonA.Clicked += (sender, e) => UpdateDisplay("A Clicked");
+            oledWing.ButtonB.Clicked += (sender, e) => UpdateDisplay("B Clicked");
+            oledWing.ButtonC.Clicked += (sender, e) => UpdateDisplay("C Clicked");
+            UpdateDisplay("Ready");
 
             return Task.CompletedTask;
         }
@@ -35,7 +35,7 @@ namespace FeatherWings.OLED128x32_Sample
         void UpdateDisplay(string message)
         {
             graphics.Clear();
-            graphics.DrawText(0, 8, message);
+            graphics.DrawText(x: 0, y: 8, message);
             graphics.Show();
         }
 
