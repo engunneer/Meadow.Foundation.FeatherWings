@@ -2,7 +2,7 @@
 
 **AdaFruit OLED 128x64 monochrome display FeatherWing**
 
-The **OLED128x64** library is designed for the [Wilderness Labs](www.wildernesslabs.co) Meadow .NET IoT platform and is part of [Meadow.Foundation](https://developer.wildernesslabs.co/Meadow/Meadow.Foundation/)
+The **OLED128x64** library is designed for the [Wilderness Labs](www.wildernesslabs.co) Meadow .NET IoT platform and is part of [Meadow.Foundation](https://developer.wildernesslabs.co/Meadow/Meadow.Foundation/).
 
 The **Meadow.Foundation** peripherals library is an open-source repository of drivers and libraries that streamline and simplify adding hardware to your C# .NET Meadow IoT application.
 
@@ -42,8 +42,8 @@ void UpdateDisplay(string message)
     graphics.DrawText(x: 0, y: 8, message);
     graphics.Show();
 }
-```
 
+```
 ## How to Contribute
 
 - **Found a bug?** [Report an issue](https://github.com/WildernessLabs/Meadow_Issues/issues)

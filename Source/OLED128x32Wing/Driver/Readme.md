@@ -40,8 +40,8 @@ void UpdateDisplay(string message)
     graphics.DrawText(x: 0, y: 8, message);
     graphics.Show();
 }
-```
 
+```
 ## How to Contribute
 
 - **Found a bug?** [Report an issue](https://github.com/WildernessLabs/Meadow_Issues/issues)
