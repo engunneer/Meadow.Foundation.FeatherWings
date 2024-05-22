@@ -17,7 +17,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Is31fl3731 object to manage the LEDs
         /// </summary>
-        protected readonly Is31fl3731 iS31Fl3731;
+        protected readonly Is31fl3731 is31Fl3731;
 
         /// <summary>
         /// Color mode of display
@@ -57,13 +57,13 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="address">The I2C address</param>
         public CharlieWing(II2cBus i2cBus, byte address = (byte)Is31fl3731.Addresses.Default)
         {
-            iS31Fl3731 = new Is31fl3731(i2cBus, address);
-            iS31Fl3731.Initialize();
+            is31Fl3731 = new Is31fl3731(i2cBus, address);
+            is31Fl3731.Initialize();
 
             for (byte i = 0; i <= MaxFrames; i++)
             {
-                iS31Fl3731.SetLedState(i, true);
-                iS31Fl3731.Clear(i);
+                is31Fl3731.SetLedState(i, true);
+                is31Fl3731.Clear(i);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="updateDisplay">Force a display update if true, false to clear the buffer</param>
         public void Clear(bool updateDisplay = false)
         {
-            iS31Fl3731.Clear(Frame);
+            is31Fl3731.Clear(Frame);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Meadow.Foundation.FeatherWings
             // Swap
             (y, x) = (x, y);
 
-            iS31Fl3731.SetLedPwm(Frame, (byte)(x + y * 16), brightness);
+            is31Fl3731.SetLedPwm(Frame, (byte)(x + y * 16), brightness);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="y">The y position in pixels 0 indexed from the top</param>
         public void InvertPixel(int x, int y)
         {
-            byte currentBrightness = iS31Fl3731.ReadLedPwm(Frame, (byte)(x + y * 16));
+            byte currentBrightness = is31Fl3731.GetLedPwm(Frame, (byte)(x + y * 16));
             byte invertedBrightness = (byte)(255 - currentBrightness);
             DrawPixel(x, y, invertedBrightness);
         }
@@ -196,7 +196,7 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public void Show()
         {
-            iS31Fl3731.DisplayFrame(Frame);
+            is31Fl3731.DisplayFrame(Frame);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="frame">The frame to show (0-7)</param>
         public void Show(byte frame)
         {
-            iS31Fl3731.DisplayFrame(frame);
+            is31Fl3731.DisplayFrame(frame);
         }
     }
 }
