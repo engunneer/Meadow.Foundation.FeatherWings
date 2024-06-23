@@ -31,7 +31,7 @@ namespace Meadow.Foundation.FeatherWings
         /// Returns a instance of a Stepper Motor object
         /// </summary>
         /// <param name="steps">The number of steps the motor has</param>
-        /// <param name="motorIndex">The stepper motor port we want to use: only 0 or 1 are valid</param>
+        /// <param name="motorIndex">The stepper motor port</param>
         /// <returns>StepperMotor</returns>
         public StepperMotor GetStepper(StepperMotorIndex motorIndex, int steps)
         {
@@ -41,7 +41,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <summary>
         /// Returns a instance of a DC Motor object
         /// </summary>
-        /// <param name="motorIndex">The motor port we want to use: 1 thru 4 are valid</param>
+        /// <param name="motorIndex">The motor port</param>
         /// <returns>DCMotor</returns>
         public DCMotor GetMotor(DCMotorIndex motorIndex)
         {

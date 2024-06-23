@@ -85,9 +85,17 @@ namespace Meadow.Foundation.FeatherWings
             return servo;
         }
 
-        private IPin GetPinForPortIndex(byte portIndex)
+        private IPin? GetPinForPortIndex(byte portIndex)
         {
-            return pca9685.Pins.LED1;
+            foreach (var pin in pca9685.Pins)
+            {
+                if ((byte)pin.Key == portIndex)
+                {
+                    return pin;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -7,16 +7,16 @@ using static Meadow.Foundation.FeatherWings.MotorWing;
 namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
-    /// Represents a Stepper Motor
+    /// Represents a Stepper Motor and provides functionality to control it.
     /// </summary>
     public class StepperMotor
     {
         private readonly IPwmPort portA;
         private readonly IPwmPort portB;
 
-        int currentStep;
-        double rpmDelay;
-        readonly int motorSteps;
+        private int currentStep;
+        private double rpmDelay;
+        private readonly int motorSteps;
 
         private readonly IPwmPort pwmPortA;
         private readonly IDigitalOutputPort in1A;
@@ -26,15 +26,16 @@ namespace Meadow.Foundation.FeatherWings
         private readonly IDigitalOutputPort in1B;
         private readonly IDigitalOutputPort in2B;
 
-        const short MICROSTEPS = 8;
-        readonly byte[] microStepCurve = { 0, 50, 98, 142, 180, 212, 236, 250, 255 };
+        private const short MICROSTEPS = 8;
+        private readonly byte[] microStepCurve = { 0, 50, 98, 142, 180, 212, 236, 250, 255 };
 
         /// <summary>
-        ///  a Stepper motor object
+        /// Initializes a new instance of the <see cref="StepperMotor"/> class.
         /// </summary>
-        /// <param name="steps">The number of steps per revolution</param>
-        /// <param name="num">The Stepper motor port</param>
-        /// <param name="pca9685">The PCS9685 diver object</param>
+        /// <param name="steps">The number of steps per revolution.</param>
+        /// <param name="motorIndex">The index of the stepper motor port.</param>
+        /// <param name="pca9685">The PCA9685 driver object.</param>
+        /// <exception cref="ArgumentException">Thrown when an invalid stepper motor index is provided.</exception>
         public StepperMotor(int steps, StepperMotorIndex motorIndex, Pca9685 pca9685)
         {
             if (motorIndex == StepperMotorIndex.Motor1)
@@ -59,7 +60,7 @@ namespace Meadow.Foundation.FeatherWings
             }
             else
             {
-                throw new ArgumentException("Stepper num must be 0 or 1");
+                throw new ArgumentException("Stepper motor index must be Motor1 or Motor2");
             }
 
             motorSteps = steps;
@@ -68,19 +69,19 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Set the delay for the Stepper Motor speed in RPM
+        /// Sets the speed of the stepper motor in revolutions per minute (RPM).
         /// </summary>
-        /// <param name="rpm">The desired RPM</param>
+        /// <param name="rpm">The desired RPM.</param>
         public void SetSpeed(short rpm)
         {
             rpmDelay = 60000.0 / (motorSteps * rpm);
         }
 
         /// <summary>
-        /// Move the stepper with the given RPM
+        /// Moves the stepper motor a specified number of steps at the current speed.
         /// </summary>
-        /// <param name="steps">The number of steps to move. Negative number moves the stepper backwards</param>
-        /// <param name="style">How to perform the step</param>
+        /// <param name="steps">The number of steps to move. A negative value moves the stepper backwards.</param>
+        /// <param name="style">The style of stepping to use.</param>
         public virtual void Step(int steps = 1, Style style = Style.SINGLE)
         {
             if (steps > 0)
@@ -94,11 +95,11 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Move the stepper with the given RPM
+        /// Moves the stepper motor a specified number of steps in a given direction and style.
         /// </summary>
-        /// <param name="steps">The number of steps to move</param>
-        /// <param name="direction">The direction to go</param>
-        /// <param name="style">How to perform the step</param>
+        /// <param name="steps">The number of steps to move.</param>
+        /// <param name="direction">The direction to move.</param>
+        /// <param name="style">The style of stepping to use.</param>
         protected virtual void Step(int steps, Direction direction, Style style)
         {
             int delay = (int)rpmDelay;
@@ -121,11 +122,11 @@ namespace Meadow.Foundation.FeatherWings
         }
 
         /// <summary>
-        /// Move the stepper one step only
+        /// Moves the stepper motor one step in a given direction and style.
         /// </summary>
-        /// <param name="direction">The direction to go</param>
-        /// <param name="style">How to perform the step</param>
-        /// <returns>The current location</returns>
+        /// <param name="direction">The direction to move.</param>
+        /// <param name="style">The style of stepping to use.</param>
+        /// <returns>The current step position.</returns>
         protected virtual int Step(Direction direction, Style style)
         {
             int ocrb, ocra;
@@ -133,7 +134,7 @@ namespace Meadow.Foundation.FeatherWings
 
             if (style == Style.SINGLE)
             {
-                if (currentStep / (MICROSTEPS / 2) % 2 != 0) // we're at an odd step, weird
+                if (currentStep / (MICROSTEPS / 2) % 2 != 0) // Odd step
                 {
                     if (direction == Direction.Forward)
                     {
@@ -144,8 +145,8 @@ namespace Meadow.Foundation.FeatherWings
                         currentStep -= MICROSTEPS / 2;
                     }
                 }
-                else
-                { // go to the next even step
+                else // Even step
+                {
                     if (direction == Direction.Forward)
                     {
                         currentStep += MICROSTEPS;
@@ -158,8 +159,8 @@ namespace Meadow.Foundation.FeatherWings
             }
             else if (style == Style.DOUBLE)
             {
-                if ((currentStep / (MICROSTEPS / 2) % 2) != 0)
-                { // we're at an even step, weird
+                if (currentStep / (MICROSTEPS / 2) % 2 != 0) // Even step
+                {
                     if (direction == Direction.Forward)
                     {
                         currentStep += MICROSTEPS / 2;
@@ -169,8 +170,8 @@ namespace Meadow.Foundation.FeatherWings
                         currentStep -= MICROSTEPS / 2;
                     }
                 }
-                else
-                { // go to the next odd step
+                else // Odd step
+                {
                     if (direction == Direction.Forward)
                     {
                         currentStep += MICROSTEPS;
@@ -207,24 +208,22 @@ namespace Meadow.Foundation.FeatherWings
                 currentStep %= MICROSTEPS * 4;
                 ocra = ocrb = 0;
 
-                if ((currentStep >= 0) && (currentStep < MICROSTEPS))
+                if (currentStep < MICROSTEPS)
                 {
                     ocra = microStepCurve[MICROSTEPS - currentStep];
                     ocrb = microStepCurve[currentStep];
                 }
-                else if ((currentStep >= MICROSTEPS) && (currentStep < MICROSTEPS * 2))
+                else if (currentStep < MICROSTEPS * 2)
                 {
                     ocra = microStepCurve[currentStep - MICROSTEPS];
                     ocrb = microStepCurve[MICROSTEPS * 2 - currentStep];
                 }
-                else if ((currentStep >= MICROSTEPS * 2) &&
-                         (currentStep < MICROSTEPS * 3))
+                else if (currentStep < MICROSTEPS * 3)
                 {
                     ocra = microStepCurve[MICROSTEPS * 3 - currentStep];
                     ocrb = microStepCurve[currentStep - MICROSTEPS * 2];
                 }
-                else if ((currentStep >= MICROSTEPS * 3) &&
-                         (currentStep < MICROSTEPS * 4))
+                else
                 {
                     ocra = microStepCurve[currentStep - MICROSTEPS * 3];
                     ocrb = microStepCurve[MICROSTEPS * 4 - currentStep];
@@ -237,87 +236,54 @@ namespace Meadow.Foundation.FeatherWings
             pwmPortA.DutyCycle = ocra / 255.0;
             pwmPortB.DutyCycle = ocrb / 255.0;
 
-            // release all
-            int latch_state = 0; // all motor pins to 0
+            int latchState = 0;
 
-            // Serial.println(step, DEC);
             if (style == Style.MICROSTEP)
             {
-                if ((currentStep >= 0) && (currentStep < MICROSTEPS))
-                    latch_state |= 0x03;
-                if ((currentStep >= MICROSTEPS) && (currentStep < MICROSTEPS * 2))
-                    latch_state |= 0x06;
-                if ((currentStep >= MICROSTEPS * 2) && (currentStep < MICROSTEPS * 3))
-                    latch_state |= 0x0C;
-                if ((currentStep >= MICROSTEPS * 3) && (currentStep < MICROSTEPS * 4))
-                    latch_state |= 0x09;
+                if (currentStep < MICROSTEPS)
+                    latchState |= 0x03;
+                else if (currentStep < MICROSTEPS * 2)
+                    latchState |= 0x06;
+                else if (currentStep < MICROSTEPS * 3)
+                    latchState |= 0x0C;
+                else
+                    latchState |= 0x09;
             }
             else
             {
                 switch (currentStep / (MICROSTEPS / 2))
                 {
                     case 0:
-                        latch_state |= 0x1; // energize coil 1 only
+                        latchState |= 0x1;
                         break;
                     case 1:
-                        latch_state |= 0x3; // energize coil 1+2
+                        latchState |= 0x3;
                         break;
                     case 2:
-                        latch_state |= 0x2; // energize coil 2 only
+                        latchState |= 0x2;
                         break;
                     case 3:
-                        latch_state |= 0x6; // energize coil 2+3
+                        latchState |= 0x6;
                         break;
                     case 4:
-                        latch_state |= 0x4; // energize coil 3 only
+                        latchState |= 0x4;
                         break;
                     case 5:
-                        latch_state |= 0xC; // energize coil 3+4
+                        latchState |= 0xC;
                         break;
                     case 6:
-                        latch_state |= 0x8; // energize coil 4 only
+                        latchState |= 0x8;
                         break;
                     case 7:
-                        latch_state |= 0x9; // energize coil 1+4
+                        latchState |= 0x9;
                         break;
                 }
             }
 
-            if ((latch_state & 0x1) == 0x1)
-            {
-                in1A.State = true;
-            }
-            else
-            {
-                in1A.State = false;
-            }
-
-            if ((latch_state & 0x2) == 0x2)
-            {
-                in1B.State = true;
-            }
-            else
-            {
-                in1B.State = false;
-            }
-
-            if ((latch_state & 0x4) == 0x4)
-            {
-                in2A.State = true;
-            }
-            else
-            {
-                in2A.State = false;
-            }
-
-            if ((latch_state & 0x8) == 0x8)
-            {
-                in2B.State = true;
-            }
-            else
-            {
-                in2B.State = false;
-            }
+            in1A.State = (latchState & 0x1) != 0;
+            in1B.State = (latchState & 0x2) != 0;
+            in2A.State = (latchState & 0x4) != 0;
+            in2B.State = (latchState & 0x8) != 0;
 
             return currentStep;
         }
