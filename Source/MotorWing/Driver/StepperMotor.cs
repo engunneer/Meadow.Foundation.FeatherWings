@@ -1,110 +1,79 @@
 ﻿using Meadow.Foundation.ICs.IOExpanders;
+using Meadow.Hardware;
 using System;
 using System.Threading;
+using static Meadow.Foundation.FeatherWings.MotorWing;
 
 namespace Meadow.Foundation.FeatherWings
 {
     /// <summary>
-    /// Motor style
-    /// </summary>
-    public enum Style
-    {
-        /// <summary>
-        /// Single
-        /// </summary>
-        SINGLE = 1,
-        /// <summary>
-        /// Double
-        /// </summary>
-        DOUBLE = 2,
-        /// <summary>
-        /// Interleave
-        /// </summary>
-        INTERLEAVE = 3,
-        /// <summary>
-        /// Microstep
-        /// </summary>
-        MICROSTEP = 4
-    }
-
-    /// <summary>
-    /// Motor direction
-    /// </summary>
-    public enum Direction
-    {
-        /// <summary>
-        /// Forward motor direction
-        /// </summary>
-        FORWARD,
-        /// <summary>
-        /// Backwards moto direction
-        /// </summary>
-        BACKWARD
-    }
-
-    /// <summary>
     /// Represents a Stepper Motor
     /// </summary>
-    public class StepperMotor : Motor
+    public class StepperMotor
     {
-        int _currentstep;
-        double _rpmDelay;
-        readonly int _motorSteps;
-        readonly byte _pwmA;
-        readonly byte _AIN2;
-        readonly byte _AIN1;
-        readonly byte _pwmB;
-        readonly byte _BIN2;
-        readonly byte _BIN1;
+        private readonly IPwmPort portA;
+        private readonly IPwmPort portB;
+
+        int currentStep;
+        double rpmDelay;
+        readonly int motorSteps;
+
+        private readonly IPwmPort pwmPortA;
+        private readonly IDigitalOutputPort in1A;
+        private readonly IDigitalOutputPort in2A;
+
+        private readonly IPwmPort pwmPortB;
+        private readonly IDigitalOutputPort in1B;
+        private readonly IDigitalOutputPort in2B;
 
         const short MICROSTEPS = 8;
-        readonly byte[] _microStepCurve = { 0, 50, 98, 142, 180, 212, 236, 250, 255 };
-        //private readonly int[] microstepcurve = {0,   25,  50,  74,  98,  120, 141, 162, 180,197, 212, 225, 236, 244, 250, 253, 255}//MICROSTEPS == 16
+        readonly byte[] microStepCurve = { 0, 50, 98, 142, 180, 212, 236, 250, 255 };
 
         /// <summary>
-        /// Creates a Stepper motor objet un-initialized 
+        ///  a Stepper motor object
         /// </summary>
         /// <param name="steps">The number of steps per revolution</param>
         /// <param name="num">The Stepper motor port</param>
-        /// <param name="pca9685">The PCS968 diver object</param>
-        public StepperMotor(int steps, int num, Pca9685 pca9685) : base(pca9685)
+        /// <param name="pca9685">The PCS9685 diver object</param>
+        public StepperMotor(int steps, StepperMotorIndex motorIndex, Pca9685 pca9685)
         {
+            if (motorIndex == StepperMotorIndex.Motor1)
+            {
+                pwmPortA = pca9685.Pins.LED8.CreatePwmPort(pca9685.Frequency);
+                in1A = pca9685.Pins.LED10.CreateDigitalOutputPort();
+                in2A = pca9685.Pins.LED9.CreateDigitalOutputPort();
 
-            if (num == 0)
-            {
-                _pwmA = 8;
-                _AIN2 = 9;
-                _AIN1 = 10;
-                _pwmB = 13;
-                _BIN2 = 12;
-                _BIN1 = 11;
+                pwmPortB = pca9685.Pins.LED13.CreatePwmPort(pca9685.Frequency);
+                in1B = pca9685.Pins.LED11.CreateDigitalOutputPort();
+                in2B = pca9685.Pins.LED12.CreateDigitalOutputPort();
             }
-            else if (num == 1)
+            else if (motorIndex == StepperMotorIndex.Motor2)
             {
-                _pwmA = 2;
-                _AIN2 = 3;
-                _AIN1 = 4;
-                _pwmB = 7;
-                _BIN2 = 6;
-                _BIN1 = 5;
+                pwmPortA = pca9685.Pins.LED2.CreatePwmPort(pca9685.Frequency);
+                in1A = pca9685.Pins.LED4.CreateDigitalOutputPort();
+                in2A = pca9685.Pins.LED3.CreateDigitalOutputPort();
+
+                pwmPortB = pca9685.Pins.LED7.CreatePwmPort(pca9685.Frequency);
+                in1B = pca9685.Pins.LED5.CreateDigitalOutputPort();
+                in2B = pca9685.Pins.LED6.CreateDigitalOutputPort();
             }
             else
             {
                 throw new ArgumentException("Stepper num must be 0 or 1");
             }
 
-            _motorSteps = steps;
+            motorSteps = steps;
             SetSpeed(15);
-            _currentstep = 0;
+            currentStep = 0;
         }
 
         /// <summary>
         /// Set the delay for the Stepper Motor speed in RPM
         /// </summary>
         /// <param name="rpm">The desired RPM</param>
-        public override void SetSpeed(short rpm)
+        public void SetSpeed(short rpm)
         {
-            _rpmDelay = 60000.0 / (_motorSteps * rpm);
+            rpmDelay = 60000.0 / (motorSteps * rpm);
         }
 
         /// <summary>
@@ -116,11 +85,11 @@ namespace Meadow.Foundation.FeatherWings
         {
             if (steps > 0)
             {
-                Step(steps, Direction.FORWARD, style);
+                Step(steps, Direction.Forward, style);
             }
             else
             {
-                Step(Math.Abs(steps), Direction.BACKWARD, style);
+                Step(Math.Abs(steps), Direction.Reverse, style);
             }
         }
 
@@ -132,7 +101,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="style">How to perform the step</param>
         protected virtual void Step(int steps, Direction direction, Style style)
         {
-            int delay = (int)_rpmDelay;
+            int delay = (int)rpmDelay;
             if (style == Style.INTERLEAVE)
             {
                 delay /= 2;
@@ -164,110 +133,109 @@ namespace Meadow.Foundation.FeatherWings
 
             if (style == Style.SINGLE)
             {
-                if ((_currentstep / (MICROSTEPS / 2)) % 2 != 0) // we're at an odd step, weird
+                if (currentStep / (MICROSTEPS / 2) % 2 != 0) // we're at an odd step, weird
                 {
-                    if (direction == Direction.FORWARD)
+                    if (direction == Direction.Forward)
                     {
-                        _currentstep += MICROSTEPS / 2;
+                        currentStep += MICROSTEPS / 2;
                     }
                     else
                     {
-                        _currentstep -= MICROSTEPS / 2;
+                        currentStep -= MICROSTEPS / 2;
                     }
                 }
                 else
                 { // go to the next even step
-                    if (direction == Direction.FORWARD)
+                    if (direction == Direction.Forward)
                     {
-                        _currentstep += MICROSTEPS;
+                        currentStep += MICROSTEPS;
                     }
                     else
                     {
-                        _currentstep -= MICROSTEPS;
+                        currentStep -= MICROSTEPS;
                     }
                 }
             }
             else if (style == Style.DOUBLE)
             {
-                if (((_currentstep / (MICROSTEPS / 2) % 2)) != 0)
+                if ((currentStep / (MICROSTEPS / 2) % 2) != 0)
                 { // we're at an even step, weird
-                    if (direction == Direction.FORWARD)
+                    if (direction == Direction.Forward)
                     {
-                        _currentstep += MICROSTEPS / 2;
+                        currentStep += MICROSTEPS / 2;
                     }
                     else
                     {
-                        _currentstep -= MICROSTEPS / 2;
+                        currentStep -= MICROSTEPS / 2;
                     }
                 }
                 else
                 { // go to the next odd step
-                    if (direction == Direction.FORWARD)
+                    if (direction == Direction.Forward)
                     {
-                        _currentstep += MICROSTEPS;
+                        currentStep += MICROSTEPS;
                     }
                     else
                     {
-                        _currentstep -= MICROSTEPS;
+                        currentStep -= MICROSTEPS;
                     }
                 }
             }
             else if (style == Style.INTERLEAVE)
             {
-                if (direction == Direction.FORWARD)
+                if (direction == Direction.Forward)
                 {
-                    _currentstep += MICROSTEPS / 2;
+                    currentStep += MICROSTEPS / 2;
                 }
                 else
                 {
-                    _currentstep -= MICROSTEPS / 2;
+                    currentStep -= MICROSTEPS / 2;
                 }
             }
             else if (style == Style.MICROSTEP)
             {
-                if (direction == Direction.FORWARD)
+                if (direction == Direction.Forward)
                 {
-                    _currentstep++;
+                    currentStep++;
                 }
                 else
                 {
-                    // BACKWARDS
-                    _currentstep--;
+                    currentStep--;
                 }
 
-                _currentstep += MICROSTEPS * 4;
-                _currentstep %= MICROSTEPS * 4;
+                currentStep += MICROSTEPS * 4;
+                currentStep %= MICROSTEPS * 4;
                 ocra = ocrb = 0;
 
-                if ((_currentstep >= 0) && (_currentstep < MICROSTEPS))
+                if ((currentStep >= 0) && (currentStep < MICROSTEPS))
                 {
-                    ocra = _microStepCurve[MICROSTEPS - _currentstep];
-                    ocrb = _microStepCurve[_currentstep];
+                    ocra = microStepCurve[MICROSTEPS - currentStep];
+                    ocrb = microStepCurve[currentStep];
                 }
-                else if ((_currentstep >= MICROSTEPS) && (_currentstep < MICROSTEPS * 2))
+                else if ((currentStep >= MICROSTEPS) && (currentStep < MICROSTEPS * 2))
                 {
-                    ocra = _microStepCurve[_currentstep - MICROSTEPS];
-                    ocrb = _microStepCurve[MICROSTEPS * 2 - _currentstep];
+                    ocra = microStepCurve[currentStep - MICROSTEPS];
+                    ocrb = microStepCurve[MICROSTEPS * 2 - currentStep];
                 }
-                else if ((_currentstep >= MICROSTEPS * 2) &&
-                         (_currentstep < MICROSTEPS * 3))
+                else if ((currentStep >= MICROSTEPS * 2) &&
+                         (currentStep < MICROSTEPS * 3))
                 {
-                    ocra = _microStepCurve[MICROSTEPS * 3 - _currentstep];
-                    ocrb = _microStepCurve[_currentstep - MICROSTEPS * 2];
+                    ocra = microStepCurve[MICROSTEPS * 3 - currentStep];
+                    ocrb = microStepCurve[currentStep - MICROSTEPS * 2];
                 }
-                else if ((_currentstep >= MICROSTEPS * 3) &&
-                         (_currentstep < MICROSTEPS * 4))
+                else if ((currentStep >= MICROSTEPS * 3) &&
+                         (currentStep < MICROSTEPS * 4))
                 {
-                    ocra = _microStepCurve[_currentstep - MICROSTEPS * 3];
-                    ocrb = _microStepCurve[MICROSTEPS * 4 - _currentstep];
+                    ocra = microStepCurve[currentStep - MICROSTEPS * 3];
+                    ocrb = microStepCurve[MICROSTEPS * 4 - currentStep];
                 }
             }
 
-            _currentstep += MICROSTEPS * 4;
-            _currentstep %= MICROSTEPS * 4;
+            currentStep += MICROSTEPS * 4;
+            currentStep %= MICROSTEPS * 4;
 
-            pca9685.SetPwm(_pwmA, 0, ocra * 16);
-            pca9685.SetPwm(_pwmB, 0, ocrb * 16);
+            pwmPortA.DutyCycle = ocra / 255.0;
+            pwmPortB.DutyCycle = ocrb / 255.0;
 
             // release all
             int latch_state = 0; // all motor pins to 0
@@ -275,18 +243,18 @@ namespace Meadow.Foundation.FeatherWings
             // Serial.println(step, DEC);
             if (style == Style.MICROSTEP)
             {
-                if ((_currentstep >= 0) && (_currentstep < MICROSTEPS))
+                if ((currentStep >= 0) && (currentStep < MICROSTEPS))
                     latch_state |= 0x03;
-                if ((_currentstep >= MICROSTEPS) && (_currentstep < MICROSTEPS * 2))
+                if ((currentStep >= MICROSTEPS) && (currentStep < MICROSTEPS * 2))
                     latch_state |= 0x06;
-                if ((_currentstep >= MICROSTEPS * 2) && (_currentstep < MICROSTEPS * 3))
+                if ((currentStep >= MICROSTEPS * 2) && (currentStep < MICROSTEPS * 3))
                     latch_state |= 0x0C;
-                if ((_currentstep >= MICROSTEPS * 3) && (_currentstep < MICROSTEPS * 4))
+                if ((currentStep >= MICROSTEPS * 3) && (currentStep < MICROSTEPS * 4))
                     latch_state |= 0x09;
             }
             else
             {
-                switch (_currentstep / (MICROSTEPS / 2))
+                switch (currentStep / (MICROSTEPS / 2))
                 {
                     case 0:
                         latch_state |= 0x1; // energize coil 1 only
@@ -317,42 +285,41 @@ namespace Meadow.Foundation.FeatherWings
 
             if ((latch_state & 0x1) == 0x1)
             {
-                pca9685.SetPin(_AIN2, true);
+                in1A.State = true;
             }
             else
             {
-                pca9685.SetPin(_AIN2, false);
+                in1A.State = false;
             }
 
             if ((latch_state & 0x2) == 0x2)
             {
-                pca9685.SetPin(_BIN1, true);
+                in1B.State = true;
             }
             else
             {
-                pca9685.SetPin(_BIN1, false);
+                in1B.State = false;
             }
 
             if ((latch_state & 0x4) == 0x4)
             {
-                pca9685.SetPin(_AIN1, true);
+                in2A.State = true;
             }
             else
             {
-                pca9685.SetPin(_AIN1, false);
+                in2A.State = false;
             }
 
             if ((latch_state & 0x8) == 0x8)
             {
-                pca9685.SetPin(_BIN2, true);
+                in2B.State = true;
             }
             else
             {
-                pca9685.SetPin(_BIN2, false);
+                in2B.State = false;
             }
 
-            return _currentstep;
-
+            return currentStep;
         }
     }
 }
