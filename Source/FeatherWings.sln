@@ -103,7 +103,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{9D0732
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeoPixelWing_Sample", "NeoPixelWing\Sample\NeoPixelWing_Sample\NeoPixelWing_Sample.csproj", "{CE05E44F-1A05-4AE8-9C98-AE6B73A2AEE9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Core", "..\..\Meadow.Core\source\Meadow.Core\Meadow.Core.csproj", "{D9938C19-2DA9-4AAE-87DF-19AACFAFD617}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Core", "..\..\Meadow.Core\Source\Meadow.Core\Meadow.Core.csproj", "{D9938C19-2DA9-4AAE-87DF-19AACFAFD617}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.Units", "..\..\Meadow.Units\Source\Meadow.Units\Meadow.Units.csproj", "{C91D75E5-D668-466A-A89D-970BE8228ECB}"
 EndProject
