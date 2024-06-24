@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServoWing_Sample", "ServoWi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_External", "_External", "{BB1A7E97-4559-459B-BDF8-4ED41758AB29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.F7", "..\..\Meadow.Core\source\implementations\f7\Meadow.F7\Meadow.F7.csproj", "{59624F1F-91C6-4D1A-B408-BA8E85B764B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meadow.F7", "..\..\Meadow.Core\Source\implementations\f7\Meadow.F7\Meadow.F7.csproj", "{59624F1F-91C6-4D1A-B408-BA8E85B764B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICs.IOExpanders.Pca9685", "..\..\Meadow.Foundation\Source\Meadow.Foundation.Peripherals\ICs.IOExpanders.Pca9685\Driver\ICs.IOExpanders.Pca9685.csproj", "{31DAEBA3-F497-4FFD-9BD2-88771CCC457A}"
 EndProject
