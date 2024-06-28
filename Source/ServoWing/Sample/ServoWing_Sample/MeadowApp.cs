@@ -24,8 +24,8 @@ namespace FeatherWings.ServoWing_Sample
             servoWing = new ServoWing(Device.CreateI2cBus(I2cBusSpeed.FastPlus));
 
             servo = servoWing.GetServo(0,
-                new AngularServo.PulseAngle(NamedServoConfigs.SG90.MinimumAngle, TimeSpan.FromMilliseconds(NamedServoConfigs.SG90.MinimumPulseDuration)),
-                new AngularServo.PulseAngle(NamedServoConfigs.SG90.MaximumAngle, TimeSpan.FromMilliseconds(NamedServoConfigs.SG90.MaximumPulseDuration)));
+                new AngularServo.PulseAngle(NamedServoConfigs.SG90.MinimumAngle, new TimePeriod(NamedServoConfigs.SG90.MinimumPulseDuration, TimePeriod.UnitType.Milliseconds)),
+                new AngularServo.PulseAngle(NamedServoConfigs.SG90.MaximumAngle, new TimePeriod(NamedServoConfigs.SG90.MaximumPulseDuration, TimePeriod.UnitType.Milliseconds)));
 
             return Task.CompletedTask;
         }

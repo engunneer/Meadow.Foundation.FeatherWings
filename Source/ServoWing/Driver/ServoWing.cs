@@ -75,7 +75,7 @@ namespace Meadow.Foundation.FeatherWings
         /// <param name="portIndex"></param>
         /// <param name="minimumPulseDuration">The minimum pulse duration for the servo.</param>
         /// <param name="maximumPulseDuration">The maximum pulse duration for the servo.</param>
-        public IContinuousRotationServo GetContinuousRotatioServo(byte portIndex, TimeSpan minimumPulseDuration, TimeSpan maximumPulseDuration)
+        public IContinuousRotationServo GetContinuousRotatioServo(byte portIndex, TimePeriod minimumPulseDuration, TimePeriod maximumPulseDuration)
         {
             var pin = GetPinForPortIndex(portIndex);
 
