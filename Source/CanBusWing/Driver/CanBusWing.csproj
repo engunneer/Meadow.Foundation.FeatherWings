@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Meadow.Sdk/1.1.0">
   <PropertyGroup>
     <Version>1.11.0</Version>
-    <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
     <LangVersion>10.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -20,7 +19,6 @@
     <Description>AdaFruit CAN Bus FeatherWing</Description>
   </PropertyGroup>
   <ItemGroup>
-    <None Include=".\Readme.md" Pack="true" PackagePath="" />
     <None Include="..\..\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
     <ItemGroup>

@@ -14,7 +14,7 @@ namespace Meadow.Foundation.FeatherWings
         /// </summary>
         public CanBusWing(IF7FeatherMeadowDevice feather)
             : base(
-                  bus: feather.CreateSpiBus(0, 1_000_000.Hertz()),
+                  bus: feather.CreateSpiBus(3, 1_000_000.Hertz()),
                   chipSelect: feather.Pins.D09.CreateDigitalOutputPort(true),
                   interruptPort: feather.Pins.D10.CreateDigitalInterruptPort(InterruptMode.EdgeFalling),
                   oscillator: CanOscillator.Osc_16MHz)
