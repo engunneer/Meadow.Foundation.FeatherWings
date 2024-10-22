@@ -12,7 +12,7 @@
     <AssemblyName>CanBusWing</AssemblyName>
     <Company>Wilderness Labs, Inc</Company>
     <PackageProjectUrl>http://developer.wildernesslabs.co/Meadow/Meadow.Foundation/</PackageProjectUrl>
-    <PackageId>Meadow.Foundation.FeatherWings.GPSWing</PackageId>
+    <PackageId>Meadow.Foundation.FeatherWings.CanBusWing</PackageId>
     <RepositoryUrl>https://github.com/WildernessLabs/Meadow.Foundation.FeatherWings</RepositoryUrl>
     <PackageTags>Meadow.Foundation, CanBusWing, CAN</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
